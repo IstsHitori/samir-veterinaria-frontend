@@ -5,6 +5,7 @@ import {
   arrayPatientClinicalReports,
   type PatientClinicalReports,
 } from "../types/clinicalReport";
+import type { CreateClinicalReportForm } from "../schemas/clinical-report.schema";
 
 export async function getPatientReports(
   id: string
@@ -27,6 +28,26 @@ export async function getPatientReports(
     }
     throw new Error(
       "Error al obtener los reportes clinicos del usuario. Intentalo más tarde "
+    );
+  }
+}
+
+export async function craetePatientReport(
+  data: CreateClinicalReportForm
+): Promise<string> {
+  try {
+    const response = await api.post(`${env.apiUrl}/api/medical-reports`, data);
+
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(
+        error.response?.data.message ||
+          "Error al crear el reporte clinico del usuario"
+      );
+    }
+    throw new Error(
+      "Error al crear el reporte clinico del usuario. Intentalo más tarde "
     );
   }
 }

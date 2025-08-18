@@ -28,6 +28,8 @@ import type { Patient } from "@/features/patient/schemas/patient.schema";
 import type { CreateClinicalReportForm } from "../schemas/clinical-report.schema";
 import { createClinicalReportSchema } from "../schemas/clinical-report.schema";
 import usePatients from "@/features/patient/hooks/usePatients";
+import { toast } from "react-toastify";
+import useClinicalReports from "../hooks/useClinicalReports";
 
 interface AddClinicalReportWithSearchModalProps {
   isOpen: boolean;
@@ -39,6 +41,7 @@ export function AddClinicalReportWithSearchModal({
   onClose,
 }: AddClinicalReportWithSearchModalProps) {
   const { patients } = usePatients();
+  const { createPatientReport } = useClinicalReports();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [step, setStep] = useState<"search" | "form">("search");
@@ -47,7 +50,7 @@ export function AddClinicalReportWithSearchModal({
     resolver: zodResolver(createClinicalReportSchema),
     defaultValues: {
       patientId: "",
-      message: "",
+      details: "",
     },
   });
 
@@ -79,12 +82,16 @@ export function AddClinicalReportWithSearchModal({
     onClose();
   };
 
-  const onSubmit = (data: CreateClinicalReportForm) => {
-    console.log("[v0] Creating clinical report:", {
-      ...data,
-    });
-    // Here you would typically call an API to create the clinical report
-    handleClose();
+  const onSubmit = async (data: CreateClinicalReportForm) => {
+    try {
+      const message = await createPatientReport(data);
+      toast.success(message);
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+    } finally {
+      // Here you would typically call an API to create the clinical report
+      handleClose();
+    }
   };
 
   const getSpeciesIcon = (species: string) => {
@@ -252,7 +259,7 @@ export function AddClinicalReportWithSearchModal({
               >
                 <FormField
                   control={form.control}
-                  name="message"
+                  name="details"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Reporte Clínico *</FormLabel>

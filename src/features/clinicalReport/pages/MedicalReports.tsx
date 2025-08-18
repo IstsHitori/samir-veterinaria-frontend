@@ -88,6 +88,8 @@ export default function MedicalReportsDashboard() {
     try {
       const reports = await getClinicalReports(patient._id);
       setClinicalReports(reports);
+      console.log(reports);
+      
     } catch (error) {
       console.error("[v0] Error loading clinical reports:", error);
       setClinicalReports([]);
