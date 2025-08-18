@@ -78,6 +78,18 @@ export function PatientDetailsModal({
     setLocalClinicalReports(clinicalReports);
   }, [clinicalReports]);
 
+  // Efecto adicional para manejar cambios en los reportes
+  useEffect(() => {
+    // Calcular el número total de páginas con los reportes actuales
+    const newTotalPages = Math.ceil(localClinicalReports.length / REPORTS_PER_PAGE) || 1;
+
+    // Si la página actual es mayor que el nuevo total de páginas, regresar a la página 1
+    // o a la última página disponible
+    if (currentReportPage > newTotalPages) {
+      setCurrentReportPage(newTotalPages);
+    }
+  }, [localClinicalReports.length, currentReportPage]);
+
   const REPORTS_PER_PAGE = 3;
 
   if (!patient) return null;
@@ -142,12 +154,19 @@ export function PatientDetailsModal({
       if (patient) {
         const updatedReports = await getPatientReports(patient._id);
         setLocalClinicalReports(updatedReports);
+
+        // Calcular el nuevo número total de páginas
+        const newTotalPages = Math.ceil(updatedReports.length / REPORTS_PER_PAGE) || 1;
+
+        // Ajustar la página actual si es necesario
+        if (currentReportPage > newTotalPages) {
+          setCurrentReportPage(newTotalPages);
+        }
       }
       toast.success(message);
     } catch (error) {
       if (error instanceof Error) toast.error(error.message);
     } finally {
-      // Delete the report (in a real app, this would make an API call)
       setIsDeleteModalOpen(false);
       setSelectedReport(null);
     }
