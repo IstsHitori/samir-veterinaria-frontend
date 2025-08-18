@@ -36,9 +36,13 @@ import {
 import { EditClinicalReportModal } from "./edit-clinical-report-modal";
 import { DeleteClinicalReportModal } from "./delete-clinical-report-modal";
 import { AddClinicalReportModal } from "./add-clinical-report-modal";
-import type { EditClinicalReportForm } from "../schemas/clinical-report.schema";
+import type {
+  CreateClinicalReportForm,
+  EditClinicalReportForm,
+} from "../schemas/clinical-report.schema";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import useClinicalReports from "../hooks/useClinicalReports";
+import { toast } from "react-toastify";
 
 interface PatientDetailsModalProps {
   patient: Patient | null;
@@ -54,14 +58,17 @@ export function PatientDetailsModal({
   onClose,
 }: PatientDetailsModalProps) {
   const { user: currentUser } = useAuth();
-  const { getPatientReports } = useClinicalReports();
+  const { getPatientReports, createPatientReport, updatePatientReport } =
+    useClinicalReports();
   const [currentReportPage, setCurrentReportPage] = useState(1);
   const [selectedReport, setSelectedReport] =
     useState<PatientClinicalReport | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [localClinicalReports, setLocalClinicalReports] = useState<PatientClinicalReport[]>([]);
+  const [localClinicalReports, setLocalClinicalReports] = useState<
+    PatientClinicalReport[]
+  >([]);
 
   useEffect(() => {
     setLocalClinicalReports(clinicalReports);
@@ -72,7 +79,9 @@ export function PatientDetailsModal({
   if (!patient) return null;
   if (!currentUser) return null;
 
-  const totalReportPages = Math.ceil(localClinicalReports.length / REPORTS_PER_PAGE);
+  const totalReportPages = Math.ceil(
+    localClinicalReports.length / REPORTS_PER_PAGE
+  );
   const startReportIndex = (currentReportPage - 1) * REPORTS_PER_PAGE;
   const endReportIndex = startReportIndex + REPORTS_PER_PAGE;
   const currentReports = localClinicalReports.slice(
@@ -103,14 +112,23 @@ export function PatientDetailsModal({
     setIsAddModalOpen(true);
   };
 
-  const handleSaveEditedReport = (
+  const handleSaveEditedReport = async (
     reportId: string,
     data: EditClinicalReportForm
   ) => {
-    // Update the report in the list (in a real app, this would make an API call)
-    console.log("[v0] Saving edited report:", data, reportId);
-    setIsEditModalOpen(false);
-    setSelectedReport(null);
+    try {
+      const message = await updatePatientReport(reportId, data);
+      if (patient) {
+        const updatedReports = await getPatientReports(patient._id);
+        setLocalClinicalReports(updatedReports);
+      }
+      toast.success(message);
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+    } finally {
+      setIsEditModalOpen(false);
+      setSelectedReport(null);
+    }
   };
 
   const handleConfirmDeleteReport = (reportId: string) => {
@@ -120,21 +138,21 @@ export function PatientDetailsModal({
     setSelectedReport(null);
   };
 
-  const handleSaveNewReport = async (newReport: Partial<PatientClinicalReport>) => {
-    // Add the new report (in a real app, this would make an API call)
-    console.log("[v0] Saving new report:", newReport);
-    
-    // Después de guardar, recargar los reportes para refrescar la vista
-    if (patient) {
-      try {
+  const handleSaveNewReport = async (newReport: CreateClinicalReportForm) => {
+    try {
+      const message = await createPatientReport(newReport);
+      if (patient) {
         const updatedReports = await getPatientReports(patient._id);
         setLocalClinicalReports(updatedReports);
-      } catch (error) {
-        console.error("[v0] Error refreshing reports after add:", error);
       }
+      toast.success(message);
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+    } finally {
+      // Después de guardar, recargar los reportes para refrescar la vista
+
+      setIsAddModalOpen(false);
     }
-    
-    setIsAddModalOpen(false);
   };
 
   const canEditReport = (report: PatientClinicalReport) => {

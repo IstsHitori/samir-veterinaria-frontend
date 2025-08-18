@@ -5,7 +5,10 @@ import {
   arrayPatientClinicalReports,
   type PatientClinicalReports,
 } from "../types/clinicalReport";
-import type { CreateClinicalReportForm } from "../schemas/clinical-report.schema";
+import type {
+  CreateClinicalReportForm,
+  EditClinicalReportForm,
+} from "../schemas/clinical-report.schema";
 
 export async function getPatientReports(
   id: string
@@ -48,6 +51,30 @@ export async function craetePatientReport(
     }
     throw new Error(
       "Error al crear el reporte clinico del usuario. Intentalo más tarde "
+    );
+  }
+}
+
+export async function updatePatientReport(
+  reportId: string,
+  data: EditClinicalReportForm
+): Promise<string> {
+  try {
+    const response = await api.patch(
+      `${env.apiUrl}/api/medical-reports/${reportId}`,
+      data
+    );
+
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(
+        error.response?.data.message ||
+          "Error al actualizar el reporte clinico del usuario"
+      );
+    }
+    throw new Error(
+      "Error al actualizar el reporte clinico del usuario. Intentalo más tarde "
     );
   }
 }

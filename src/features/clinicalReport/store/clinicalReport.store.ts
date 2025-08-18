@@ -3,12 +3,20 @@ import type { PatientClinicalReports } from "../types/clinicalReport";
 import {
   craetePatientReport,
   getPatientReports,
+  updatePatientReport,
 } from "../services/medical-reports.service";
-import type { CreateClinicalReportForm } from "../schemas/clinical-report.schema";
+import type {
+  CreateClinicalReportForm,
+  EditClinicalReportForm,
+} from "../schemas/clinical-report.schema";
 
 interface ClinicalReportStore {
   getPatientReports: (id: string) => Promise<PatientClinicalReports[]>;
   createPatientReport: (data: CreateClinicalReportForm) => Promise<string>;
+  updatePatientReport: (
+    reportId: string,
+    data: EditClinicalReportForm
+  ) => Promise<string>;
 }
 
 export const useClinicalReportStore = create<ClinicalReportStore>(
@@ -19,6 +27,9 @@ export const useClinicalReportStore = create<ClinicalReportStore>(
     },
     createPatientReport: async (data) => {
       return await craetePatientReport(data);
+    },
+    updatePatientReport: async (reportId, data) => {
+      return await updatePatientReport(reportId, data);
     },
   })
 );

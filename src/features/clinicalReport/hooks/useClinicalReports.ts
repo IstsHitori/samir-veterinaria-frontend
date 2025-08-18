@@ -4,9 +4,13 @@ export default function useClinicalReports() {
   const getPatientReports = useClinicalReportStore(
     (state) => state.getPatientReports
   );
-    const createPatientReport = useClinicalReportStore(
+  const createPatientReport = useClinicalReportStore(
     (state) => state.createPatientReport
   );
 
-  return { getPatientReports, createPatientReport };
+  const updatePatientReport = useClinicalReportStore(
+    (state) => state.updatePatientReport
+  );
+
+  return { getPatientReports, createPatientReport, updatePatientReport };
 }

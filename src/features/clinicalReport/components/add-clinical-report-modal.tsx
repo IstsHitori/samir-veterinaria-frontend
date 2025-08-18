@@ -29,7 +29,7 @@ interface AddClinicalReportModalProps {
   isOpen: boolean;
   onClose: () => void;
   patient: Patient | null;
-  onSave: (data: CreateClinicalReportForm) => void;
+  onSave: (data: CreateClinicalReportForm) => Promise<void>;
 }
 
 export function AddClinicalReportModal({
@@ -44,14 +44,14 @@ export function AddClinicalReportModal({
     resolver: zodResolver(createClinicalReportSchema),
     defaultValues: {
       patientId: patient?._id || "",
-      message: "",
+      details: "",
     },
   });
 
   const handleSubmit = async (data: CreateClinicalReportForm) => {
     setIsLoading(true);
     try {
-      onSave(data);
+      await onSave(data);
       onClose();
       form.reset();
     } catch (error) {
@@ -92,7 +92,7 @@ export function AddClinicalReportModal({
           >
             <FormField
               control={form.control}
-              name="message"
+              name="details"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
