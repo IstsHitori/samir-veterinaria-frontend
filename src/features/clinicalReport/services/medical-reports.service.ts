@@ -78,3 +78,23 @@ export async function updatePatientReport(
     );
   }
 }
+
+export async function deletePatientReport(reportId: string): Promise<string> {
+  try {
+    const response = await api.delete(
+      `${env.apiUrl}/api/medical-reports/${reportId}`
+    );
+
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      throw new Error(
+        error.response?.data.message ||
+          "Error al eliminar el reporte clinico del usuario"
+      );
+    }
+    throw new Error(
+      "Error al eliminar el reporte clinico del usuario. Intentalo más tarde "
+    );
+  }
+}

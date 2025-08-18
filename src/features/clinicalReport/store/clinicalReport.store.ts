@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { PatientClinicalReports } from "../types/clinicalReport";
 import {
   craetePatientReport,
+  deletePatientReport,
   getPatientReports,
   updatePatientReport,
 } from "../services/medical-reports.service";
@@ -17,6 +18,7 @@ interface ClinicalReportStore {
     reportId: string,
     data: EditClinicalReportForm
   ) => Promise<string>;
+  deletePatientReport: (reportId: string) => Promise<string>;
 }
 
 export const useClinicalReportStore = create<ClinicalReportStore>(
@@ -30,6 +32,9 @@ export const useClinicalReportStore = create<ClinicalReportStore>(
     },
     updatePatientReport: async (reportId, data) => {
       return await updatePatientReport(reportId, data);
+    },
+    deletePatientReport: async (reportId) => {
+      return await deletePatientReport(reportId);
     },
   })
 );

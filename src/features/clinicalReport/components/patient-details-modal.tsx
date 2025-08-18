@@ -58,8 +58,12 @@ export function PatientDetailsModal({
   onClose,
 }: PatientDetailsModalProps) {
   const { user: currentUser } = useAuth();
-  const { getPatientReports, createPatientReport, updatePatientReport } =
-    useClinicalReports();
+  const {
+    getPatientReports,
+    createPatientReport,
+    updatePatientReport,
+    deletePatientReport,
+  } = useClinicalReports();
   const [currentReportPage, setCurrentReportPage] = useState(1);
   const [selectedReport, setSelectedReport] =
     useState<PatientClinicalReport | null>(null);
@@ -131,11 +135,22 @@ export function PatientDetailsModal({
     }
   };
 
-  const handleConfirmDeleteReport = (reportId: string) => {
-    // Delete the report (in a real app, this would make an API call)
-    console.log("[v0] Deleting report:", reportId);
-    setIsDeleteModalOpen(false);
-    setSelectedReport(null);
+  const handleConfirmDeleteReport = async (reportId: string) => {
+    try {
+      const message = await deletePatientReport(reportId);
+
+      if (patient) {
+        const updatedReports = await getPatientReports(patient._id);
+        setLocalClinicalReports(updatedReports);
+      }
+      toast.success(message);
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+    } finally {
+      // Delete the report (in a real app, this would make an API call)
+      setIsDeleteModalOpen(false);
+      setSelectedReport(null);
+    }
   };
 
   const handleSaveNewReport = async (newReport: CreateClinicalReportForm) => {

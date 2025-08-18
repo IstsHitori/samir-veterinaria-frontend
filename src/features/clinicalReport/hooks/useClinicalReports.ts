@@ -12,5 +12,14 @@ export default function useClinicalReports() {
     (state) => state.updatePatientReport
   );
 
-  return { getPatientReports, createPatientReport, updatePatientReport };
+  const deletePatientReport = useClinicalReportStore(
+    (state) => state.deletePatientReport
+  );
+
+  return {
+    getPatientReports,
+    createPatientReport,
+    updatePatientReport,
+    deletePatientReport,
+  };
 }
