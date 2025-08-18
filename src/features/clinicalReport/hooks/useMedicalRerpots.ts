@@ -36,6 +36,11 @@ export function useMedicalReports() {
     });
   }, [patients, searchTerm, selectedSpecies]);
 
+  // Calcular número de pacientes activos dentro de los filtrados
+  const activePatientCount = useMemo(() => {
+    return filteredPatients.filter(patient => patient.isActive).length;
+  }, [filteredPatients]);
+
   // Paginación
   const totalPages = Math.ceil(filteredPatients.length / ITEMS_PER_PAGE) || 1;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -141,6 +146,7 @@ export function useMedicalReports() {
     startIndex,
     itemsPerPage: ITEMS_PER_PAGE,
     totalPatients: filteredPatients.length,
+    activePatientCount, // Exponer el número de pacientes activos
     handleSearchChange,
     handleSpeciesChange,
     setCurrentPage,

@@ -31,7 +31,6 @@ import type { PatientClinicalReports } from "../types/clinicalReport";
 import { getAllPatients } from "@/features/patient/services/patient.service";
 import usePatients from "@/features/patient/hooks/usePatients";
 import { toast } from "react-toastify";
-import { useMemo } from "react";
 
 export default function MedicalReportsDashboard() {
   const { setPatients } = usePatients();
@@ -44,6 +43,8 @@ export default function MedicalReportsDashboard() {
     totalPages,
     startIndex,
     itemsPerPage,
+    totalPatients: filteredTotalPatients,
+    activePatientCount, // Usar el contador de activos del hook
     handleSearchChange,
     handleSpeciesChange,
     setCurrentPage,
@@ -99,7 +100,27 @@ export default function MedicalReportsDashboard() {
     setClinicalReports([]);
   };
 
-  const totalPatients = useMemo(() => patients.length, [patients]);
+  const totalPatientsCount = filteredTotalPatients;
+
+  // Necesitamos obtener todos los pacientes activos filtrados, no solo los de la página actual
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [activePatientsCount, setActivePatientsCount] = useState(0);
+
+  // Calcular el número de pacientes activos cuando cambian los filtros
+  useEffect(() => {
+    // Usar el hook para obtener esta información
+    const fetchActiveCount = async () => {
+      try {
+        // Contamos los pacientes activos entre los filtrados
+        const activeCount = patients.filter((p) => p.isActive).length;
+        setActivePatientsCount(activeCount);
+      } catch (error) {
+        console.error("Error contando pacientes activos:", error);
+      }
+    };
+
+    fetchActiveCount();
+  }, [patients]);
 
   // Show loading state while patients are being fetched
   if (!isLoaded) {
@@ -151,7 +172,9 @@ export default function MedicalReportsDashboard() {
                   <p className="text-blue-100 text-sm font-medium uppercase tracking-wide">
                     Total Pacientes
                   </p>
-                  <p className="text-3xl font-bold mt-2">{totalPatients}</p>
+                  <p className="text-3xl font-bold mt-2">
+                    {filteredTotalPatients}
+                  </p>
                   <p className="text-blue-200 text-xs mt-1">
                     Registrados en sistema
                   </p>
@@ -171,7 +194,7 @@ export default function MedicalReportsDashboard() {
                     Activos
                   </p>
                   <p className="text-3xl font-bold mt-2">
-                    {patients.filter((p) => p.isActive).length}
+                    {activePatientCount}
                   </p>
                   <p className="text-purple-200 text-xs mt-1">
                     En tratamiento actual
@@ -249,8 +272,8 @@ export default function MedicalReportsDashboard() {
                 className="bg-secondary/10 text-secondary border-secondary/20"
               >
                 {startIndex + 1}-
-                {Math.min(startIndex + itemsPerPage, totalPatients)} de{" "}
-                {totalPatients}
+                {Math.min(startIndex + itemsPerPage, totalPatientsCount)} de{" "}
+                {totalPatientsCount}
               </Badge>
             </div>
           </CardHeader>
