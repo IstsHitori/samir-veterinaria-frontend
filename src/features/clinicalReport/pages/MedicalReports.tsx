@@ -25,7 +25,6 @@ import {
   Plus,
   Stethoscope,
   Heart,
-  TrendingUp,
 } from "lucide-react";
 import { Species } from "@/features/patient/schemas/patient.schema";
 import type { PatientClinicalReports } from "../types/clinicalReport";
@@ -48,7 +47,6 @@ export default function MedicalReportsDashboard() {
     handleSearchChange,
     handleSpeciesChange,
     setCurrentPage,
-    getClinicalReportsSync,
     updateReportCache,
   } = useMedicalReports();
 
@@ -127,8 +125,8 @@ export default function MedicalReportsDashboard() {
                   <Stethoscope className="h-8 w-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold">Reportes Médicos</h1>
-                  <p className="text-cyan-100 text-lg mt-2">
+                  <h1 className="text-3xl font-bold">Reportes Médicos</h1>
+                  <p className="text-cyan-100 text-md mt-2">
                     Sistema integral de historias clínicas veterinarias
                   </p>
                 </div>
@@ -136,7 +134,7 @@ export default function MedicalReportsDashboard() {
             </div>
             <Button
               onClick={() => setIsAddReportModalOpen(true)}
-              className="bg-secondary hover:bg-secondary/90 text-white shadow-lg hover:shadow-xl transition-all duration-200 px-6 py-3"
+              className="bg-white hover:bg-secondary/90 text-black shadow-lg hover:shadow-xl transition-all duration-200 px-6 py-3"
               size="lg"
             >
               <Plus className="h-5 w-5 mr-2" />
@@ -145,7 +143,7 @@ export default function MedicalReportsDashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -160,31 +158,6 @@ export default function MedicalReportsDashboard() {
                 </div>
                 <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
                   <Users className="h-8 w-8 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-emerald-100 text-sm font-medium uppercase tracking-wide">
-                    Con Historias
-                  </p>
-                  <p className="text-3xl font-bold mt-2">
-                    {
-                      patients.filter(
-                        (p) => getClinicalReportsSync(p._id).length > 0
-                      ).length
-                    }
-                  </p>
-                  <p className="text-emerald-200 text-xs mt-1">
-                    Tienen reportes médicos
-                  </p>
-                </div>
-                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                  <FileText className="h-8 w-8 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -206,37 +179,6 @@ export default function MedicalReportsDashboard() {
                 </div>
                 <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
                   <Heart className="h-8 w-8 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-orange-100 text-sm font-medium uppercase tracking-wide">
-                    Promedio
-                  </p>
-                  <p className="text-3xl font-bold mt-2">
-                    {totalPatients > 0
-                      ? Math.round(
-                          (patients.reduce(
-                            (acc, p) =>
-                              acc + getClinicalReportsSync(p._id).length,
-                            0
-                          ) /
-                            totalPatients) *
-                            10
-                        ) / 10
-                      : 0}
-                  </p>
-                  <p className="text-orange-200 text-xs mt-1">
-                    Reportes por paciente
-                  </p>
-                </div>
-                <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                  <TrendingUp className="h-8 w-8 text-white" />
                 </div>
               </div>
             </CardContent>
