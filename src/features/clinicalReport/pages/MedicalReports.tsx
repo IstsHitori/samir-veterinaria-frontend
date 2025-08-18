@@ -48,8 +48,8 @@ export default function MedicalReportsDashboard() {
     handleSearchChange,
     handleSpeciesChange,
     setCurrentPage,
-    getClinicalReports,
     getClinicalReportsSync,
+    updateReportCache,
   } = useMedicalReports();
 
   // Fetch patients first
@@ -68,10 +68,9 @@ export default function MedicalReportsDashboard() {
         setIsLoaded(true);
       }
     };
-    
+
     fetchPatients();
   }, [setPatients]);
-
 
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -86,10 +85,10 @@ export default function MedicalReportsDashboard() {
 
     console.log("[v0] Loading clinical reports for patient:", patient._id);
     try {
-      const reports = await getClinicalReports(patient._id);
+      // Usar updateReportCache en lugar de getClinicalReports para asegurar datos frescos
+      const reports = await updateReportCache(patient._id);
       setClinicalReports(reports);
       console.log(reports);
-      
     } catch (error) {
       console.error("[v0] Error loading clinical reports:", error);
       setClinicalReports([]);

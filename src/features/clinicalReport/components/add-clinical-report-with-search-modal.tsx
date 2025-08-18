@@ -30,6 +30,7 @@ import { createClinicalReportSchema } from "../schemas/clinical-report.schema";
 import usePatients from "@/features/patient/hooks/usePatients";
 import { toast } from "react-toastify";
 import useClinicalReports from "../hooks/useClinicalReports";
+import { useMedicalReports } from "../hooks/useMedicalRerpots";
 
 interface AddClinicalReportWithSearchModalProps {
   isOpen: boolean;
@@ -42,6 +43,7 @@ export function AddClinicalReportWithSearchModal({
 }: AddClinicalReportWithSearchModalProps) {
   const { patients } = usePatients();
   const { createPatientReport } = useClinicalReports();
+  const { updateReportCache } = useMedicalReports();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [step, setStep] = useState<"search" | "form">("search");
@@ -86,6 +88,11 @@ export function AddClinicalReportWithSearchModal({
     try {
       const message = await createPatientReport(data);
       toast.success(message);
+
+      // Actualizar el caché de reportes para este paciente
+      if (selectedPatient) {
+        await updateReportCache(selectedPatient._id);
+      }
     } catch (error) {
       if (error instanceof Error) toast.error(error.message);
     } finally {

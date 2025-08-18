@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Heart,
   Calendar,
@@ -38,6 +38,7 @@ import { DeleteClinicalReportModal } from "./delete-clinical-report-modal";
 import { AddClinicalReportModal } from "./add-clinical-report-modal";
 import type { EditClinicalReportForm } from "../schemas/clinical-report.schema";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import useClinicalReports from "../hooks/useClinicalReports";
 
 interface PatientDetailsModalProps {
   patient: Patient | null;
@@ -53,22 +54,28 @@ export function PatientDetailsModal({
   onClose,
 }: PatientDetailsModalProps) {
   const { user: currentUser } = useAuth();
+  const { getPatientReports } = useClinicalReports();
   const [currentReportPage, setCurrentReportPage] = useState(1);
   const [selectedReport, setSelectedReport] =
     useState<PatientClinicalReport | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [localClinicalReports, setLocalClinicalReports] = useState<PatientClinicalReport[]>([]);
+
+  useEffect(() => {
+    setLocalClinicalReports(clinicalReports);
+  }, [clinicalReports]);
 
   const REPORTS_PER_PAGE = 3;
 
   if (!patient) return null;
   if (!currentUser) return null;
 
-  const totalReportPages = Math.ceil(clinicalReports.length / REPORTS_PER_PAGE);
+  const totalReportPages = Math.ceil(localClinicalReports.length / REPORTS_PER_PAGE);
   const startReportIndex = (currentReportPage - 1) * REPORTS_PER_PAGE;
   const endReportIndex = startReportIndex + REPORTS_PER_PAGE;
-  const currentReports = clinicalReports.slice(
+  const currentReports = localClinicalReports.slice(
     startReportIndex,
     endReportIndex
   );
@@ -113,9 +120,20 @@ export function PatientDetailsModal({
     setSelectedReport(null);
   };
 
-  const handleSaveNewReport = (newReport: Partial<PatientClinicalReport>) => {
+  const handleSaveNewReport = async (newReport: Partial<PatientClinicalReport>) => {
     // Add the new report (in a real app, this would make an API call)
     console.log("[v0] Saving new report:", newReport);
+    
+    // Después de guardar, recargar los reportes para refrescar la vista
+    if (patient) {
+      try {
+        const updatedReports = await getPatientReports(patient._id);
+        setLocalClinicalReports(updatedReports);
+      } catch (error) {
+        console.error("[v0] Error refreshing reports after add:", error);
+      }
+    }
+    
     setIsAddModalOpen(false);
   };
 

@@ -79,7 +79,7 @@ export function useMedicalReports() {
         setLoadingReports((prev) => ({ ...prev, [patientId]: false }));
       }
     },
-    [clinicalReportsCache, loadingReports]
+    [clinicalReportsCache, loadingReports, getPatientReports]
   );
 
   const getClinicalReportsSync = useCallback(
@@ -107,6 +107,31 @@ export function useMedicalReports() {
     setCurrentPage(1);
   };
 
+  // Nueva función para invalidar el caché y forzar una recarga
+  const invalidateReportCache = useCallback((patientId: string) => {
+    setClinicalReportsCache(prev => {
+      const newCache = { ...prev };
+      // Eliminar la entrada del caché para este paciente
+      delete newCache[patientId];
+      return newCache;
+    });
+  }, []);
+
+  // Nueva función para actualizar el caché con un nuevo reporte
+  const updateReportCache = useCallback(async (patientId: string) => {
+    try {
+      setLoadingReports((prev) => ({ ...prev, [patientId]: true }));
+      const reports = await getPatientReports(patientId);
+      setClinicalReportsCache((prev) => ({ ...prev, [patientId]: reports }));
+      return reports;
+    } catch (error) {
+      console.error("[v0] Error updating clinical reports cache:", error);
+      return [];
+    } finally {
+      setLoadingReports((prev) => ({ ...prev, [patientId]: false }));
+    }
+  }, [getPatientReports]);
+
   return {
     patients: paginatedPatients,
     searchTerm,
@@ -122,5 +147,7 @@ export function useMedicalReports() {
     getClinicalReports,
     getClinicalReportsSync,
     isLoadingReports,
+    invalidateReportCache,
+    updateReportCache,
   };
 }
