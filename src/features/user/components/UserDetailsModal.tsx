@@ -137,8 +137,8 @@ export function UserDetailsModal({
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Contact Information */}
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-              <CardHeader className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-t-lg p-4">
+            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden rounded-xl p-0">
+              <CardHeader className="bg-gradient-to-r from-blue-500 to-blue-600 text-white m-0 rounded-none p-4">
                 <CardTitle className="flex items-center gap-3 text-base">
                   <div className="p-2 bg-white/20 rounded-lg">
                     <Mail className="h-4 w-4" />
@@ -179,8 +179,8 @@ export function UserDetailsModal({
             </Card>
 
             {/* Role Information */}
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-              <CardHeader className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-t-lg p-4">
+            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden rounded-xl p-0">
+              <CardHeader className="bg-gradient-to-r from-purple-500 to-purple-600 text-white m-0 rounded-none p-4">
                 <CardTitle className="flex items-center gap-3 text-base">
                   <div className="p-2 bg-white/20 rounded-lg">
                     <Shield className="h-4 w-4" />
@@ -211,8 +211,8 @@ export function UserDetailsModal({
           </div>
 
           {/* Activity Timeline */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-            <CardHeader className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-t-lg p-4">
+          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden rounded-xl p-0">
+            <CardHeader className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white m-0 rounded-none p-4">
               <CardTitle className="flex items-center gap-3 text-base">
                 <div className="p-2 bg-white/20 rounded-lg">
                   <Activity className="h-4 w-4" />

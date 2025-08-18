@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  Frame,
-  Map,
-  PieChart,
-  PersonStanding,
-  LayoutDashboard,
-} from "lucide-react";
+import { Frame, PersonStanding, LayoutDashboard } from "lucide-react";
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -18,6 +12,7 @@ import {
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import HeaderSidedar from "./header-sidedar";
 import { NavAuxiliar } from "./nav-auxiliar";
+import { NavVeterinary } from "./nav-veterinary";
 
 // This is sample data.
 const data = {
@@ -33,21 +28,23 @@ const data = {
       icon: PersonStanding,
     },
   ],
+  veterinary: [
+    {
+      name: "Historias clínicas",
+      url: "/app/medical-reports",
+      icon: PersonStanding,
+    },
+  ],
   auxiliar: [
     {
-      name: "Design Engineering",
-      url: "#",
+      name: "Pacientes",
+      url: "/app/patients",
+      icon: PersonStanding,
+    },
+    {
+      name: "Dueños",
+      url: "/app/owners",
       icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
 };
@@ -56,14 +53,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
   if (!user) return;
   const isAdmin = user.role === "admin";
+  const isAuxiliary = user.role === "auxiliar";
+  const isVeterinary = user.role === "veterinario";
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <HeaderSidedar />
       </SidebarHeader>
       <SidebarContent>
-        {isAdmin && <NavMain items={data.admin} />}
-        <NavAuxiliar auxiliar={data.auxiliar} />
+        {isAdmin && (
+          <>
+            <NavMain items={data.admin} />
+            <NavVeterinary veterinary={data.veterinary} />
+            <NavAuxiliar auxiliar={data.auxiliar} />
+          </>
+        )}
+        {isAuxiliary && <NavAuxiliar auxiliar={data.auxiliar} />}
+        {isVeterinary && <NavVeterinary veterinary={data.veterinary} />}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

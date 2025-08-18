@@ -10,7 +10,10 @@ import { ConfirmAccountPage } from "@/features/auth/pages/ConfirmAccountPage";
 import ProfilePage from "./features/user/pages/ProfilePage";
 import { PrivateLayout } from "./layouts/PrivateLayout";
 import UserManagementPage from "./features/user/pages/UserManagementPage";
+import ClinicalReportsPage from "./features/clinicalReport/pages/MedicalReports";
+import PatientsDashboard from "./features/patient/pages/PatientsDashboard";
 import DashboardPage from "./features/user/pages/DashboardPage";
+import OwnersDashboard from "./features/owner/pages/OwnerDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -51,10 +54,22 @@ export const router = createBrowserRouter([
         path: "users",
         element: <UserManagementPage />,
       },
+      {
+        path: "patients",
+        element: <PatientsDashboard />,
+      },
+      {
+        path: "owners",
+        element: <OwnersDashboard />,
+      },
+      {
+        path: "medical-reports",
+        element: <ClinicalReportsPage />,
+      },
       // Redirigir a profile si no hay ruta específica
       {
         path: "*",
-        element: <Navigate to="/app/profile" replace />,
+        element: <div>Page not found</div>,
       },
     ],
   },
