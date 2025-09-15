@@ -5,6 +5,7 @@ import { PublicLayout } from "@/layouts/PublicLayout";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
 import { ForgotPasswordPage } from "@/features/auth/pages/ForgotPasswordPage";
 import { ConfirmAccountPage } from "@/features/auth/pages/ConfirmAccountPage";
+import ResetPassword from "@/features/auth/pages/ResetPassword";
 
 // User Pages
 import ProfilePage from "./features/user/pages/ProfilePage";
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
     path: "/",
     element: <Navigate to="/auth/login" replace />,
   },
+  
   {
     path: "/auth",
     element: <PublicLayout />,
@@ -36,8 +38,13 @@ export const router = createBrowserRouter([
         path: "confirm/:token",
         element: <ConfirmAccountPage />,
       },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
+      },
     ],
   },
+
   {
     path: "/app",
     element: <PrivateLayout />,

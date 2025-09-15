@@ -2,12 +2,18 @@ import { create } from "zustand";
 import { authService } from "../services/auth.service";
 import type { Profile } from "../schemas/auth.schema";
 
-
 interface AuthStore {
   user: Profile | null;
   isLoading: boolean;
   setLoading: (isLoading: boolean) => void;
   login: (token: string) => Promise<void>;
+  forgotPassword: (email: string) => Promise<string>;
+  validateToken: (token: string) => Promise<string>;
+  resetPassword: (
+    token: string,
+    newPassword: string,
+    confirmNewPassword: string
+  ) => Promise<string>;
   logout: () => void;
   loadUser: () => Promise<void>;
 }
@@ -17,7 +23,37 @@ export const useAuthStore = create<AuthStore>((set) => ({
   isLoading: false,
 
   setLoading: (isLoading) => set({ isLoading }),
-
+  forgotPassword: async (email) => {
+    try {
+      const message = await authService.forgotPassword(email);
+      return message;
+    } catch (error) {
+      if (error instanceof Error) throw error;
+      throw error;
+    }
+  },
+  validateToken: async (token) => {
+    try {
+      const message = await authService.validateToken(token);
+      return message;
+    } catch (error) {
+      if (error instanceof Error) throw error;
+      throw error;
+    }
+  },
+  resetPassword: async (token, newPassword, confirmNewPassword) => {
+    try {
+      const message = await authService.resetPassword(
+        token,
+        newPassword,
+        confirmNewPassword
+      );
+      return message;
+    } catch (error) {
+      if (error instanceof Error) throw error;
+      throw error;
+    }
+  },
   loadUser: async () => {
     set({ isLoading: true });
     try {
