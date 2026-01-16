@@ -1,6 +1,7 @@
 "use client";
 import kitty from "/kitty.png";
 import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -21,6 +22,7 @@ import {
 import { getCutName } from "@/shared/utils";
 import type { Profile } from "@/features/auth/schemas/auth.schema";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 type NavUserProps = {
   user: Profile;
@@ -28,6 +30,13 @@ type NavUserProps = {
 
 export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/auth/login");
+  };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -76,7 +85,7 @@ export function NavUser({ user }: NavUserProps) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Cerrar sesión
             </DropdownMenuItem>

@@ -103,4 +103,20 @@ export const authService = {
       throw new Error("Error al actualizar la contraseña");
     }
   },
+
+  async confirmAccount(token: string): Promise<string> {
+    try {
+      const response = await api.post(
+        `${env.apiUrl}/api/auth/confirm-email/${token}`
+      );
+
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message;
+        throw new Error(message || "Error al confirmar la cuenta");
+      }
+      throw new Error("Error al confirmar la cuenta");
+    }
+  },
 };

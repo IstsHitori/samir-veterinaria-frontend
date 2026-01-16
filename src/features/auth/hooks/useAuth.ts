@@ -6,6 +6,8 @@ export function useAuth() {
   const forgotPassword = useAuthStore((state) => state.forgotPassword);
   const validateToken = useAuthStore((state) => state.validateToken);
   const resetPassword = useAuthStore((state) => state.resetPassword);
+  const confirmAccount = useAuthStore((state) => state.confirmAccount);
+  const logout = useAuthStore((state) => state.logout);
   const user = useAuthStore((state) => state.user);
 
   return {
@@ -15,5 +17,7 @@ export function useAuth() {
     forgotPassword,
     validateToken,
     resetPassword,
+    confirmAccount,
+    logout,
   };
 }

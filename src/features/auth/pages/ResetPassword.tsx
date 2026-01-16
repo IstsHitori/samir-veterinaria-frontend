@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
+import { Eye, EyeOff } from "lucide-react";
 
 interface ResetPasswordForm {
   newPassword: string;
@@ -18,6 +19,8 @@ export default function ResetPassword() {
   const [isValidatingToken, setIsValidatingToken] = useState(true);
   const [isTokenValid, setIsTokenValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -206,7 +209,7 @@ export default function ResetPassword() {
               >
                 Nueva contraseña
               </label>
-              <div className="mt-1">
+              <div className="mt-1 relative">
                 <input
                   {...register("newPassword", {
                     required: "La contraseña es requerida",
@@ -215,26 +218,40 @@ export default function ResetPassword() {
                       message: "La contraseña debe tener al menos 8 caracteres",
                     },
                     pattern: {
-                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])/,
                       message:
-                        "La contraseña debe contener al menos una mayúscula, una minúscula y un número",
+                        "Debe contener al menos una mayúscula, una minúscula, un número y un carácter especial (@, $, !, %, *, ?, &, #)",
                     },
                   })}
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors ${
+                  className={`appearance-none block w-full px-3 py-2 pr-10 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors ${
                     errors.newPassword
                       ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500"
                       : "border-gray-300"
                   }`}
                   placeholder="Ingresa tu nueva contraseña"
                 />
-                {errors.newPassword && (
-                  <p className="mt-2 text-sm text-red-600">
-                    {errors.newPassword.message}
-                  </p>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
+              {errors.newPassword && (
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.newPassword.message}
+                </p>
+              )}
+              <p className="mt-1 text-xs text-gray-500">
+                Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial (@, $, !, %, *, ?, &, #)
+              </p>
             </div>
 
             <div>
@@ -244,28 +261,39 @@ export default function ResetPassword() {
               >
                 Confirmar nueva contraseña
               </label>
-              <div className="mt-1">
+              <div className="mt-1 relative">
                 <input
                   {...register("confirmNewPassword", {
                     required: "La confirmación de contraseña es requerida",
                     validate: (value) =>
                       value === password || "Las contraseñas no coinciden",
                   })}
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   autoComplete="new-password"
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors ${
+                  className={`appearance-none block w-full px-3 py-2 pr-10 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors ${
                     errors.confirmNewPassword
                       ? "border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500"
                       : "border-gray-300"
                   }`}
                   placeholder="Confirma tu nueva contraseña"
                 />
-                {errors.confirmNewPassword && (
-                  <p className="mt-2 text-sm text-red-600">
-                    {errors.confirmNewPassword.message}
-                  </p>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
+              {errors.confirmNewPassword && (
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.confirmNewPassword.message}
+                </p>
+              )}
             </div>
 
             <div>

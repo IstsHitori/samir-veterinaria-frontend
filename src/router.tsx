@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
         element: <ForgotPasswordPage />,
       },
       {
-        path: "confirm/:token",
+        path: "confirm",
         element: <ConfirmAccountPage />,
       },
       {

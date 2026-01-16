@@ -29,9 +29,13 @@ export const createUserSchema = z.object({
   password: z
     .string()
     .min(8, "La contraseña debe tener al menos 8 caracteres")
-    .regex(/[a-zA-Z]/, "Debe contener al menos una letra")
+    .regex(/[a-z]/, "Debe contener al menos una letra minúscula")
+    .regex(/[A-Z]/, "Debe contener al menos una letra mayúscula")
     .regex(/[0-9]/, "Debe contener al menos un número")
-    .regex(/[^a-zA-Z0-9]/, "Debe contener al menos un carácter especial"),
+    .regex(
+      /[@$!%*?&#]/,
+      "Debe contener al menos un carácter especial (@, $, !, %, *, ?, &, #)"
+    ),
   role: z.enum(["auxiliar", "veterinario"], {
     error: "Selecciona un rol",
   }),

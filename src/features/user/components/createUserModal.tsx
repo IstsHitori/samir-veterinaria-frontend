@@ -6,6 +6,8 @@ import {
   Shield,
   Stethoscope,
   Heart,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import {
   Dialog,
@@ -26,6 +28,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserSchema, type CreateUserForm } from "../schemas/user.schema";
+import { useState } from "react";
 
 interface CreateUserModalProps {
   isOpen: boolean;
@@ -38,6 +41,8 @@ export function CreateUserModal({
   onClose,
   onSubmit,
 }: CreateUserModalProps) {
+  const [showPassword, setShowPassword] = useState(false);
+  
   const form = useForm<CreateUserForm>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
@@ -144,18 +149,34 @@ export function CreateUserModal({
               <Lock className="h-4 w-4" />
               Contraseña
             </Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Contraseña segura"
-              {...form.register("password")}
-              className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Contraseña segura"
+                {...form.register("password")}
+                className="border-gray-200 focus:border-blue-500 focus:ring-blue-500 pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             {form.formState.errors.password && (
-              <p className="text-red-600 text-sm">
+              <p className="text-red-600 text-xs leading-tight">
                 {form.formState.errors.password.message}
               </p>
             )}
+            <p className="text-xs text-gray-500">
+              Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial (@, $, !, %, *, ?, &, #)
+            </p>
           </div>
 
           <div className="space-y-2">
