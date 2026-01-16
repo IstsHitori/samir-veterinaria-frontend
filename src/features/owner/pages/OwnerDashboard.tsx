@@ -40,7 +40,7 @@ export default function OwnersDashboard() {
   const [sortBy, setSortBy] = useState<string>("name");
 
   // Hooks
-  const { updateOwner } = useOwners();
+  const { updateOwner, createOwner } = useOwners();
   const stats = useOwnerStats(owners);
 
   const filteredOwners = useMemo(() => {
@@ -119,20 +119,19 @@ export default function OwnersDashboard() {
     }
   };
 
-  const handleCreateOwner = (data: CreateOwnerForm) => {
-    const newOwner: OwnerWithPatients = {
-      _id: `owner_${Date.now()}`,
-      ...data,
-      isDeleted: false,
-      deletedAt: null,
-      patients: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    setOwners((prev) => [newOwner, ...prev]);
-    setIsCreateOwnerModalOpen(false);
-    console.log("Propietario creado:", newOwner);
+  const handleCreateOwner = async (data: CreateOwnerForm) => {
+    try {
+      const response = await createOwner(data);
+      toast.success(response.message || "Propietario creado exitosamente");
+      await fetchOwners(); // Recargar la lista desde el servidor
+      setIsCreateOwnerModalOpen(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Error al crear el propietario");
+      }
+    }
   };
 
   const handlePageChange = (newPage: number) => {
