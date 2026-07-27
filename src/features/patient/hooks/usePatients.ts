@@ -4,6 +4,7 @@ export default function usePatients() {
   const patients = usePatientStore((state) => state.patients);
   const setPatients = usePatientStore((state) => state.setPatients);
   const createPatient = usePatientStore((state) => state.createPatient);
+  const updatePatient = usePatientStore((state) => state.updatePatient);
   const desactivatePatient = usePatientStore(
     (state) => state.desactivatePatient
   );
@@ -13,6 +14,7 @@ export default function usePatients() {
     patients,
     setPatients,
     createPatient,
+    updatePatient,
     desactivatePatient,
     activatePatient,
     deletePatient,

@@ -8,6 +8,7 @@ import {
   Heart,
   Shield,
   AlertTriangle,
+  Pencil,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,7 @@ interface PatientsTableProps {
   startIndex: number;
   itemsPerPage: number;
   onViewDetails: (patient: Patient) => void;
+  onEditPatient: (patient: Patient) => void;
   onDeactivatePatient: (patient: Patient) => void;
   onActivatePatient: (patient: Patient) => void;
   onDeletePatient: (patient: Patient) => void;
@@ -77,6 +79,7 @@ export function PatientsTable({
   startIndex,
   itemsPerPage,
   onViewDetails,
+  onEditPatient,
   onDeactivatePatient,
   onActivatePatient,
   onDeletePatient,
@@ -266,6 +269,13 @@ export function PatientsTable({
                           >
                             <Eye className="h-4 w-4" />
                             Ver detalles
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => onEditPatient(patient)}
+                            className="flex items-center gap-2 cursor-pointer"
+                          >
+                            <Pencil className="h-4 w-4" />
+                            Editar paciente
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem

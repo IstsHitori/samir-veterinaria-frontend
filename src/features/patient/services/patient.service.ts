@@ -96,6 +96,28 @@ export async function activatePatient(patientId: string): Promise<string> {
   }
 }
 
+export async function updatePatient(
+  patientId: string,
+  patient: CreatePatientForm
+): Promise<string> {
+  try {
+    const response = await api.patch(
+      `${env.apiUrl}/api/patient/${patientId}`,
+      patient
+    );
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const message =
+        error.response?.data.message || "Error al actualizar el paciente";
+      throw new Error(message);
+    }
+    throw new Error(
+      "Error al actualizar el paciente. Intentalo más tarde"
+    );
+  }
+}
+
 export async function deletePatient(patientId: string): Promise<string> {
   try {
     const response = await api.delete(`${env.apiUrl}/api/patient/${patientId}`);

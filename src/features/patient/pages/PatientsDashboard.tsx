@@ -10,6 +10,7 @@ import { PatientStatsCards } from "../components/patient-stats-cards";
 import { PatientFilters } from "../components/patient-filters";
 import { PatientsTable } from "../components/patients-table";
 import { CreatePatientModal } from "../components/modals/CreatePatientModal";
+import { EditPatientModal } from "../components/modals/EditPatientModal";
 import { PatientDetailsModal } from "../components/modals/PatientDetailsModal";
 
 // Hooks
@@ -32,7 +33,7 @@ import { getAllOwners } from "@/features/owner/services/owner.service";
 export default function PatientsDashboard() {
   //custom hooks
 
-  const { setPatients, patients: mockPatients, createPatient, desactivatePatient, activatePatient, deletePatient } = usePatients();
+  const { setPatients, patients: mockPatients, createPatient, updatePatient, desactivatePatient, activatePatient, deletePatient } = usePatients();
   const {
     setOwners: setOwnersFetch,
     owners: mockOwners,
@@ -50,6 +51,8 @@ export default function PatientsDashboard() {
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isCreatePatientModalOpen, setIsCreatePatientModalOpen] =
     useState(false);
+  const [isEditPatientModalOpen, setIsEditPatientModalOpen] = useState(false);
+  const [patientToEdit, setPatientToEdit] = useState<Patient | null>(null);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isDeactivateConfirmOpen, setIsDeactivateConfirmOpen] = useState(false);
   const [isActivateConfirmOpen, setIsActivateConfirmOpen] = useState(false);
@@ -104,6 +107,11 @@ export default function PatientsDashboard() {
   const handleDeactivatePatient = (patient: Patient) => {
     setPatientToDeactivate(patient);
     setIsDeactivateConfirmOpen(true);
+  };
+
+  const handleEditPatient = (patient: Patient) => {
+    setPatientToEdit(patient);
+    setIsEditPatientModalOpen(true);
   };
 
   const handleActivatePatient = (patient: Patient) => {
@@ -182,6 +190,20 @@ export default function PatientsDashboard() {
       if (error instanceof Error) toast.error(error.message);
     } finally {
       setIsCreatePatientModalOpen(false);
+    }
+  };
+
+  const onEditPatient = async (data: CreatePatientForm) => {
+    try {
+      if (!patientToEdit) return;
+      const response = await updatePatient(patientToEdit._id, data);
+      toast.success(response);
+      await fetchPateints();
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+    } finally {
+      setIsEditPatientModalOpen(false);
+      setPatientToEdit(null);
     }
   };
 
@@ -287,6 +309,7 @@ export default function PatientsDashboard() {
             startIndex={startIndex}
             itemsPerPage={ITEMS_PER_PAGE}
             onViewDetails={handleViewDetails}
+            onEditPatient={handleEditPatient}
             onDeactivatePatient={handleDeactivatePatient}
             onActivatePatient={handleActivatePatient}
             onDeletePatient={handleDeletePatient}
@@ -308,6 +331,20 @@ export default function PatientsDashboard() {
             isOpen={isCreatePatientModalOpen}
             onClose={() => setIsCreatePatientModalOpen(false)}
             onSubmit={onCreatePatient}
+            owners={mockOwners}
+            onCreateOwner={onCreateOwner}
+          />
+        )}
+
+        {isEditPatientModalOpen && (
+          <EditPatientModal
+            isOpen={isEditPatientModalOpen}
+            onClose={() => {
+              setIsEditPatientModalOpen(false);
+              setPatientToEdit(null);
+            }}
+            onSubmit={onEditPatient}
+            patient={patientToEdit}
             owners={mockOwners}
             onCreateOwner={onCreateOwner}
           />

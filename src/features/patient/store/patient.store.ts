@@ -5,12 +5,14 @@ import {
   createPatient,
   deletePatient,
   desactivatePatient,
+  updatePatient,
 } from "../services/patient.service";
 
 interface PatientStore {
   patients: Patient[];
   setPatients: (patients: Patient[]) => void;
   createPatient: (patient: CreatePatientForm) => Promise<string>;
+  updatePatient: (patientId: string, patient: CreatePatientForm) => Promise<string>;
   desactivatePatient: (patientId: string) => Promise<string>;
   activatePatient: (patientId: string) => Promise<string>;
   deletePatient: (patientId: string) => Promise<string>;
@@ -21,6 +23,9 @@ export const usePatientStore = create<PatientStore>((set) => ({
   setPatients: (patients) => set({ patients }),
   createPatient: async (patient) => {
     return await createPatient(patient);
+  },
+  updatePatient: async (patientId, patient) => {
+    return await updatePatient(patientId, patient);
   },
   desactivatePatient: async (patientId) => {
     return await desactivatePatient(patientId);
