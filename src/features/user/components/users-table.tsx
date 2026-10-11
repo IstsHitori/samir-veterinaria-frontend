@@ -6,6 +6,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Users,
+  Pencil,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -50,6 +51,7 @@ interface UsersTableProps {
   startIndex: number;
   itemsPerPage: number;
   onViewDetails: (user: User) => void;
+  onEditUser: (user: User) => void;
   onDeactivateUser: (user: User) => void;
   onActivateUser: (user: User) => void;
   onDeleteUser: (user: User) => void;
@@ -63,6 +65,7 @@ export function UsersTable({
   startIndex,
   itemsPerPage,
   onViewDetails,
+  onEditUser,
   onDeactivateUser,
   onActivateUser,
   onDeleteUser,
@@ -221,6 +224,13 @@ export function UsersTable({
                           >
                             <Eye className="h-4 w-4" />
                             Ver detalles
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => onEditUser(user)}
+                            className="flex items-center gap-2 cursor-pointer"
+                          >
+                            <Pencil className="h-4 w-4" />
+                            Editar usuario
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem

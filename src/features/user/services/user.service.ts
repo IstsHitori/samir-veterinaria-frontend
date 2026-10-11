@@ -2,6 +2,7 @@ import { api } from "@/lib/axios";
 import { env } from "@/config/env";
 import { isAxiosError } from "axios";
 import type { ProfileUpdate } from "../types";
+import type { UpdateUserForm } from "../schemas/user.schema";
 import {
   UserArraySchema,
   type CreateUserForm,
@@ -105,6 +106,29 @@ export async function activateUser(userId: string) {
       throw new Error(message);
     }
     throw new Error("Error al activar el usuario, intentalo más tarde");
+  }
+}
+
+export async function updateUser(
+  userId: string,
+  data: UpdateUserForm
+): Promise<string> {
+  try {
+    const body: Partial<UpdateUserForm> = { ...data };
+    if (!body.password) {
+      delete body.password; // Don't send empty password
+    }
+    const response = await api.patch(`${env.apiUrl}/api/user/${userId}`, body);
+    return response.data.message || response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const message =
+        error.response?.data.message || "Error al actualizar el usuario";
+      throw new Error(message);
+    }
+    throw new Error(
+      "Error al actualizar el usuario. Inténtalo de nuevo más tarde."
+    );
   }
 }
 

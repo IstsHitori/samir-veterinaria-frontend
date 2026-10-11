@@ -9,7 +9,7 @@ import { useUserStats } from "../hooks/use-user-stats";
 import useUser from "../hooks/useUser";
 
 // Data and Types
-import type { CreateUserForm, User } from "../schemas/user.schema";
+import type { CreateUserForm, UpdateUserForm, User } from "../schemas/user.schema";
 import { ITEMS_PER_PAGE } from "../constants/user-constants";
 import {
   DeleteConfirmationModal,
@@ -20,6 +20,7 @@ import { UserFilters } from "../components/user-filters";
 import { UserDetailsModal } from "../components/UserDetailsModal";
 import { UsersTable } from "../components/users-table";
 import { CreateUserModal } from "../components/createUserModal";
+import { EditUserModal } from "../components/EditUserModal";
 import { toast } from "react-toastify";
 import { getAllUsers } from "../services/user.service";
 import { ActivateConfirmationModal } from "../components/ActivateConfirmationModa";
@@ -33,6 +34,8 @@ export default function UserManagementPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
+  const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
+  const [userToEdit, setUserToEdit] = useState<User | null>(null);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isDeactivateConfirmOpen, setIsDeactivateConfirmOpen] = useState(false);
   const [isActivateConfirmOpen, setIsActivateConfirmOpen] = useState(false);
@@ -44,6 +47,7 @@ export default function UserManagementPage() {
     users: mockUsers,
     setUsers,
     createUser,
+    updateUser,
     desactivateUser,
     activateUser,
     deleteUser,
@@ -88,6 +92,11 @@ export default function UserManagementPage() {
   const handleDesactivateUser = (user: User) => {
     setUserToDeactivate(user);
     setIsDeactivateConfirmOpen(true);
+  };
+
+  const handleEditUser = (user: User) => {
+    setUserToEdit(user);
+    setIsEditUserModalOpen(true);
   };
 
   const confirmDeleteUser = async () => {
@@ -143,6 +152,20 @@ export default function UserManagementPage() {
       if (error instanceof Error) toast.error(error.message);
     } finally {
       setIsCreateUserModalOpen(false);
+      await fetchUsers();
+    }
+  };
+
+  const onEditUser = async (data: UpdateUserForm) => {
+    try {
+      if (!userToEdit) return;
+      const response = await updateUser(userToEdit._id, data);
+      toast.success(response);
+    } catch (error) {
+      if (error instanceof Error) toast.error(error.message);
+    } finally {
+      setIsEditUserModalOpen(false);
+      setUserToEdit(null);
       await fetchUsers();
     }
   };
@@ -231,6 +254,7 @@ export default function UserManagementPage() {
             startIndex={startIndex}
             itemsPerPage={ITEMS_PER_PAGE}
             onViewDetails={handleViewDetails}
+            onEditUser={handleEditUser}
             onDeactivateUser={handleDesactivateUser}
             onActivateUser={handleActivateUser}
             onDeleteUser={handleDeleteUser}
@@ -250,6 +274,16 @@ export default function UserManagementPage() {
         isOpen={isCreateUserModalOpen}
         onClose={() => setIsCreateUserModalOpen(false)}
         onSubmit={onCreateUser}
+      />
+
+      <EditUserModal
+        isOpen={isEditUserModalOpen}
+        onClose={() => {
+          setIsEditUserModalOpen(false);
+          setUserToEdit(null);
+        }}
+        onSubmit={onEditUser}
+        user={userToEdit}
       />
 
       <DeleteConfirmationModal
