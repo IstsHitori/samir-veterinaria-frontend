@@ -22,7 +22,7 @@ export const useUserFilters = ({ users, searchTerm, roleFilter, statusFilter }: 
         (statusFilter === "active" && user.isActive) ||
         (statusFilter === "inactive" && !user.isActive)
 
-      return matchesSearch && matchesRole && matchesStatus && !user.isDelted
+      return matchesSearch && matchesRole && matchesStatus && !user.isDeleted
     })
   }, [users, searchTerm, roleFilter, statusFilter])
 }

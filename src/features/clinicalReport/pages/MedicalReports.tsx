@@ -102,26 +102,6 @@ export default function MedicalReportsDashboard() {
 
   const totalPatientsCount = filteredTotalPatients;
 
-  // Necesitamos obtener todos los pacientes activos filtrados, no solo los de la página actual
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [activePatientsCount, setActivePatientsCount] = useState(0);
-
-  // Calcular el número de pacientes activos cuando cambian los filtros
-  useEffect(() => {
-    // Usar el hook para obtener esta información
-    const fetchActiveCount = async () => {
-      try {
-        // Contamos los pacientes activos entre los filtrados
-        const activeCount = patients.filter((p) => p.isActive).length;
-        setActivePatientsCount(activeCount);
-      } catch (error) {
-        console.error("Error contando pacientes activos:", error);
-      }
-    };
-
-    fetchActiveCount();
-  }, [patients]);
-
   // Show loading state while patients are being fetched
   if (!isLoaded) {
     return (

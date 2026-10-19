@@ -26,7 +26,7 @@ export default function ProfilePage() {
   const { user } = useAuth();
 
   const [showEditForm, setShowEditForm] = useState(false);
-  const [currentProfile, setCurrentProfile] = useState(user);
+  const [currentProfile] = useState(user);
 
   if (!currentProfile) return;
   const profileUpdate = {

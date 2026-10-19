@@ -55,6 +55,7 @@ export const patientSchema = z.object({
   vaccines: z.array(z.string()),
   isActive: z.boolean(),
   deletedAt: z.string().nullable(),
+  deletedBy: z.string().nullable(),
   isDeleted: z.boolean(),
   registeredBy: registeredBySchema,
   createdAt: z.string(),

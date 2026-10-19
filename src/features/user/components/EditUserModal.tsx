@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-  UserPlus,
   Lock,
   User,
   AtSign,

@@ -488,7 +488,7 @@ export function PatientDetailsModal({
                 <CardContent>
                   {clinicalReports.length > 0 ? (
                     <div className="space-y-4">
-                      {currentReports.map((report, index) => (
+                      {currentReports.map((report) => (
                         <div
                           key={report._id}
                           className="border rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-colors"

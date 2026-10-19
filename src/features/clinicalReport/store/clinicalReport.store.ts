@@ -22,8 +22,7 @@ interface ClinicalReportStore {
 }
 
 export const useClinicalReportStore = create<ClinicalReportStore>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (set, get) => ({
+  () => ({
     getPatientReports: async (id) => {
       return await getPatientReports(id);
     },
