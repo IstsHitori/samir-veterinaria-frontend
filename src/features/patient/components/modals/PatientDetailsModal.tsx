@@ -24,6 +24,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import type { Patient } from "../../schemas/patient.schema";
 import { formatDate } from "@/shared/utils";
+import { usePatientReports } from "@/features/clinicalReport/hooks/use-patient-reports";
+import { FileText } from "lucide-react";
 import {
   getPatientInitials,
   calculateAge,
@@ -50,6 +52,13 @@ export function PatientDetailsModal({
   onClose,
   patient,
 }: PatientDetailsModalProps) {
+  const {
+    data: clinicalReports = [],
+    isLoading: isLoadingReports,
+    isError: isReportsError,
+    error: reportsError,
+  } = usePatientReports(patient?._id, isOpen);
+
   if (!patient) return null;
 
   const speciesKey = getSpeciesIcon(patient.type);
@@ -364,15 +373,61 @@ export function PatientDetailsModal({
                   <Heart className="h-5 w-5" />
                 </div>
                 Historia Clínica
+                <Badge variant="secondary" className="ml-auto">
+                  {clinicalReports.length} reportes
+                </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border-l-4 border-purple-500">
-                <p className="text-gray-700 leading-relaxed">
-                  {patient.history ||
-                    "No hay historia clínica registrada para este paciente."}
+              {isLoadingReports ? (
+                <div className="flex items-center justify-center py-6 text-gray-500">
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-purple-500 border-t-transparent mr-3" />
+                  Cargando historias clínicas...
+                </div>
+              ) : isReportsError ? (
+                <p className="text-sm text-red-600">
+                  {reportsError instanceof Error
+                    ? reportsError.message
+                    : "No se pudieron cargar las historias clínicas"}
                 </p>
-              </div>
+              ) : clinicalReports.length > 0 ? (
+                <div className="space-y-3 max-h-[320px] overflow-y-auto pr-2">
+                  {clinicalReports.map((report) => (
+                    <div
+                      key={report._id}
+                      className="rounded-lg p-4 border-l-4 border-purple-500 bg-gradient-to-r from-purple-50 to-pink-50"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span className="text-sm font-semibold text-gray-900">
+                          {report.userId?.firstName} {report.userId?.lastName}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {formatDate(report.createdAt)}
+                        </span>
+                      </div>
+                      <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap break-words">
+                        {report.details}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : patient.history ? (
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border-l-4 border-purple-500">
+                  <p className="text-xs font-medium text-gray-500 mb-2">
+                    Historia registrada al crear el paciente
+                  </p>
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-wrap break-words">
+                    {patient.history}
+                  </p>
+                </div>
+              ) : (
+                <div className="text-center py-6">
+                  <FileText className="h-10 w-10 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">
+                    No hay historia clínica registrada para este paciente.
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 

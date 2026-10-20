@@ -183,8 +183,9 @@ export default function PatientsDashboard() {
 
   const onCreatePatient = async (data: CreatePatientForm) => {
     try {
-      const response = await createPatient(data);
-      toast.success(response);
+      // El backend guarda la historia clínica del alta como primer reporte
+      const { message } = await createPatient(data);
+      toast.success(message);
       await fetchPateints();
     } catch (error) {
       if (error instanceof Error) toast.error(error.message);

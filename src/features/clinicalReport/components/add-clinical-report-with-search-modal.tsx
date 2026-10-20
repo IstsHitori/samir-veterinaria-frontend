@@ -28,9 +28,7 @@ import type { Patient } from "@/features/patient/schemas/patient.schema";
 import type { CreateClinicalReportForm } from "../schemas/clinical-report.schema";
 import { createClinicalReportSchema } from "../schemas/clinical-report.schema";
 import usePatients from "@/features/patient/hooks/usePatients";
-import { toast } from "react-toastify";
-import useClinicalReports from "../hooks/useClinicalReports";
-import { useMedicalReports } from "../hooks/useMedicalRerpots";
+import { useCreateClinicalReport } from "../hooks/use-patient-reports";
 
 interface AddClinicalReportWithSearchModalProps {
   isOpen: boolean;
@@ -42,8 +40,7 @@ export function AddClinicalReportWithSearchModal({
   onClose,
 }: AddClinicalReportWithSearchModalProps) {
   const { patients } = usePatients();
-  const { createPatientReport } = useClinicalReports();
-  const { updateReportCache } = useMedicalReports();
+  const { mutateAsync: createReport, isPending } = useCreateClinicalReport();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [step, setStep] = useState<"search" | "form">("search");
@@ -86,18 +83,10 @@ export function AddClinicalReportWithSearchModal({
 
   const onSubmit = async (data: CreateClinicalReportForm) => {
     try {
-      const message = await createPatientReport(data);
-      toast.success(message);
-
-      // Actualizar el caché de reportes para este paciente
-      if (selectedPatient) {
-        await updateReportCache(selectedPatient._id);
-      }
-    } catch (error) {
-      if (error instanceof Error) toast.error(error.message);
-    } finally {
-      // Here you would typically call an API to create the clinical report
+      await createReport(data);
       handleClose();
+    } catch {
+      // El hook de la mutación ya muestra el error al usuario
     }
   };
 
@@ -149,7 +138,7 @@ export function AddClinicalReportWithSearchModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
             {step === "search"
@@ -273,7 +262,7 @@ export function AddClinicalReportWithSearchModal({
                       <FormControl>
                         <Textarea
                           placeholder="Describe el motivo de la consulta, hallazgos, diagnóstico, tratamiento y observaciones..."
-                          className="min-h-[150px]"
+                          className="min-h-[150px] max-h-[240px] overflow-y-auto resize-y"
                           {...field}
                         />
                       </FormControl>
@@ -288,10 +277,11 @@ export function AddClinicalReportWithSearchModal({
                   </Button>
                   <Button
                     type="submit"
+                    disabled={isPending}
                     className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Crear Historia Clínica
+                    {isPending ? "Guardando..." : "Crear Historia Clínica"}
                   </Button>
                 </div>
               </form>

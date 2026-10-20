@@ -8,9 +8,14 @@ import {
 import { api } from "@/lib/axios";
 import { env } from "@/config/env";
 
+export interface CreatePatientResponse {
+  message: string;
+  patientId: string;
+}
+
 export async function createPatient(
   patient: CreatePatientForm
-): Promise<string> {
+): Promise<CreatePatientResponse> {
   try {
     
     const response = await api.post(`${env.apiUrl}/api/patient`, patient);

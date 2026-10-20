@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useState } from "react";
 import type { PatientClinicalReports as ClinicalReport } from "../types/clinicalReport";
 
 import { AlertTriangle } from "lucide-react";
@@ -16,7 +17,7 @@ interface DeleteClinicalReportModalProps {
   isOpen: boolean;
   onClose: () => void;
   report: ClinicalReport | null;
-  onConfirm: (reportId: string) => void;
+  onConfirm: (reportId: string) => void | Promise<void>;
 }
 
 export function DeleteClinicalReportModal({
@@ -25,10 +26,18 @@ export function DeleteClinicalReportModal({
   report,
   onConfirm,
 }: DeleteClinicalReportModalProps) {
-  const handleConfirm = () => {
-    if (report) {
-      onConfirm(report._id);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleConfirm = async () => {
+    if (!report) return;
+    setIsDeleting(true);
+    try {
+      await onConfirm(report._id);
       onClose();
+    } catch (error) {
+      console.error("Error deleting clinical report:", error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -69,9 +78,10 @@ export function DeleteClinicalReportModal({
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
+            disabled={isDeleting}
             className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
           >
-            Eliminar
+            {isDeleting ? "Eliminando..." : "Eliminar"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

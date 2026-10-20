@@ -43,7 +43,7 @@ import type { CreateOwnerForm } from "@/features/owner/schemas/owner.schema";
 interface CreatePatientModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: CreatePatientForm) => void;
+  onSubmit: (data: CreatePatientForm) => void | Promise<unknown>;
   owners: Owner[];
   onCreateOwner: (data: CreateOwnerForm) => Promise<string>; // Retorna el ID del propietario creado
 }
@@ -86,8 +86,8 @@ export function CreatePatientModal({
   const watchedType = form.watch("type");
   const watchedOwnerId = form.watch("ownerId");
 
-  const handleSubmit = (data: CreatePatientForm) => {
-    onSubmit(data);
+  const handleSubmit = async (data: CreatePatientForm) => {
+    await onSubmit(data);
     form.reset();
     setCurrentCondition("");
     setCurrentAllergy("");
@@ -375,8 +375,12 @@ export function CreatePatientModal({
                     id="history"
                     placeholder="Describe el historial médico del paciente..."
                     {...form.register("history")}
-                    className="border-gray-200 focus:border-blue-500 focus:ring-blue-500 min-h-[100px]"
+                    className="border-gray-200 focus:border-blue-500 focus:ring-blue-500 min-h-[100px] max-h-[220px] overflow-y-auto resize-y"
                   />
+                  <p className="text-xs text-gray-500">
+                    Se guardará como el primer reporte del paciente en
+                    "Historias Clínicas".
+                  </p>
                 </div>
               </CardContent>
             </Card>

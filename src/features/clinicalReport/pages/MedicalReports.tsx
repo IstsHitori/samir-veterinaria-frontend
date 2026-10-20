@@ -27,7 +27,6 @@ import {
   Heart,
 } from "lucide-react";
 import { Species } from "@/features/patient/schemas/patient.schema";
-import type { PatientClinicalReports } from "../types/clinicalReport";
 import { getAllPatients } from "@/features/patient/services/patient.service";
 import usePatients from "@/features/patient/hooks/usePatients";
 import { toast } from "react-toastify";
@@ -48,7 +47,6 @@ export default function MedicalReportsDashboard() {
     handleSearchChange,
     handleSpeciesChange,
     setCurrentPage,
-    updateReportCache,
   } = useMedicalReports();
 
   // Fetch patients first
@@ -74,30 +72,15 @@ export default function MedicalReportsDashboard() {
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isAddReportModalOpen, setIsAddReportModalOpen] = useState(false);
-  const [clinicalReports, setClinicalReports] = useState<
-    PatientClinicalReports[]
-  >([]);
 
-  const handleViewDetails = async (patient: Patient) => {
+  const handleViewDetails = (patient: Patient) => {
     setSelectedPatient(patient);
     setIsDetailsModalOpen(true);
-
-    console.log("[v0] Loading clinical reports for patient:", patient._id);
-    try {
-      // Usar updateReportCache en lugar de getClinicalReports para asegurar datos frescos
-      const reports = await updateReportCache(patient._id);
-      setClinicalReports(reports);
-      console.log(reports);
-    } catch (error) {
-      console.error("[v0] Error loading clinical reports:", error);
-      setClinicalReports([]);
-    }
   };
 
   const handleCloseModal = () => {
     setIsDetailsModalOpen(false);
     setSelectedPatient(null);
-    setClinicalReports([]);
   };
 
   const totalPatientsCount = filteredTotalPatients;
@@ -336,7 +319,6 @@ export default function MedicalReportsDashboard() {
         {/* Modal de Detalles del Paciente */}
         <PatientDetailsModal
           patient={selectedPatient}
-          clinicalReports={clinicalReports}
           isOpen={isDetailsModalOpen}
           onClose={handleCloseModal}
         />

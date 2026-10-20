@@ -35,7 +35,7 @@ export async function getPatientReports(
   }
 }
 
-export async function craetePatientReport(
+export async function createPatientReport(
   data: CreateClinicalReportForm
 ): Promise<string> {
   try {

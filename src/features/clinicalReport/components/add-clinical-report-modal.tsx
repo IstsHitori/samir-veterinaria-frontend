@@ -101,7 +101,7 @@ export function AddClinicalReportModal({
                   <FormControl>
                     <Textarea
                       placeholder="Describe el motivo de la consulta, hallazgos, diagnóstico, tratamiento y observaciones..."
-                      className="min-h-[150px] resize-none"
+                      className="min-h-[150px] max-h-[240px] overflow-y-auto resize-y"
                       {...field}
                     />
                   </FormControl>

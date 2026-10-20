@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -32,7 +32,7 @@ interface EditClinicalReportModalProps {
   isOpen: boolean;
   onClose: () => void;
   report: ClinicalReport | null;
-  onSave: (reportId: string, data: EditClinicalReportForm) => void;
+  onSave: (reportId: string, data: EditClinicalReportForm) => void | Promise<void>;
 }
 
 export function EditClinicalReportModal({
@@ -55,15 +55,20 @@ export function EditClinicalReportModal({
 
     setIsLoading(true);
     try {
-      onSave(report._id, data);
-      onClose();
+      await onSave(report._id, data);
       form.reset();
+      onClose();
     } catch (error) {
       console.error("Error updating clinical report:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Sincroniza el formulario cuando se elige otro reporte
+  useEffect(() => {
+    form.reset({ details: report?.details || "" });
+  }, [report, form]);
 
   const handleClose = () => {
     form.reset();
@@ -105,7 +110,7 @@ export function EditClinicalReportModal({
                   <FormControl>
                     <Textarea
                       placeholder="Escribe el reporte clínico completo incluyendo diagnóstico, tratamiento y observaciones..."
-                      className="min-h-[200px] resize-none"
+                      className="min-h-[200px] max-h-[300px] overflow-y-auto resize-y"
                       {...field}
                     />
                   </FormControl>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Patient } from "@/features/patient/schemas/patient.schema";
 import type { PatientClinicalReports as PatientClinicalReport } from "../types/clinicalReport";
 import {
@@ -41,66 +40,60 @@ import type {
   EditClinicalReportForm,
 } from "../schemas/clinical-report.schema";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import useClinicalReports from "../hooks/useClinicalReports";
-import { toast } from "react-toastify";
+import {
+  useCreateClinicalReport,
+  useDeleteClinicalReport,
+  usePatientReports,
+  useUpdateClinicalReport,
+} from "../hooks/use-patient-reports";
 
 interface PatientDetailsModalProps {
   patient: Patient | null;
-  clinicalReports: PatientClinicalReport[];
   isOpen: boolean;
   onClose: () => void;
 }
 
+const REPORTS_PER_PAGE = 3;
+
 export function PatientDetailsModal({
   patient,
-  clinicalReports,
   isOpen,
   onClose,
 }: PatientDetailsModalProps) {
   const { user: currentUser } = useAuth();
   const {
-    getPatientReports,
-    createPatientReport,
-    updatePatientReport,
-    deletePatientReport,
-  } = useClinicalReports();
+    data: clinicalReports = [],
+    isLoading: isLoadingReports,
+    isError: isReportsError,
+    error: reportsError,
+  } = usePatientReports(patient?._id, isOpen);
+  const { mutateAsync: createReport } = useCreateClinicalReport();
+  const { mutateAsync: updateReport } = useUpdateClinicalReport();
+  const { mutateAsync: deleteReport } = useDeleteClinicalReport();
+
   const [currentReportPage, setCurrentReportPage] = useState(1);
   const [selectedReport, setSelectedReport] =
     useState<PatientClinicalReport | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [localClinicalReports, setLocalClinicalReports] = useState<
-    PatientClinicalReport[]
-  >([]);
 
+  const totalReportPages =
+    Math.ceil(clinicalReports.length / REPORTS_PER_PAGE) || 1;
+
+  // Si la página actual deja de existir (crear/eliminar), volver a la última válida
   useEffect(() => {
-    setLocalClinicalReports(clinicalReports);
-  }, [clinicalReports]);
-
-  // Efecto adicional para manejar cambios en los reportes
-  useEffect(() => {
-    // Calcular el número total de páginas con los reportes actuales
-    const newTotalPages = Math.ceil(localClinicalReports.length / REPORTS_PER_PAGE) || 1;
-
-    // Si la página actual es mayor que el nuevo total de páginas, regresar a la página 1
-    // o a la última página disponible
-    if (currentReportPage > newTotalPages) {
-      setCurrentReportPage(newTotalPages);
+    if (currentReportPage > totalReportPages) {
+      setCurrentReportPage(totalReportPages);
     }
-  }, [localClinicalReports.length, currentReportPage]);
-
-  const REPORTS_PER_PAGE = 3;
+  }, [currentReportPage, totalReportPages]);
 
   if (!patient) return null;
   if (!currentUser) return null;
 
-  const totalReportPages = Math.ceil(
-    localClinicalReports.length / REPORTS_PER_PAGE
-  );
   const startReportIndex = (currentReportPage - 1) * REPORTS_PER_PAGE;
   const endReportIndex = startReportIndex + REPORTS_PER_PAGE;
-  const currentReports = localClinicalReports.slice(
+  const currentReports = clinicalReports.slice(
     startReportIndex,
     endReportIndex
   );
@@ -124,73 +117,28 @@ export function PatientDetailsModal({
     setIsDeleteModalOpen(true);
   };
 
-  const handleAddReport = () => {
-    setIsAddModalOpen(true);
-  };
-
   const handleSaveEditedReport = async (
     reportId: string,
     data: EditClinicalReportForm
   ) => {
-    try {
-      const message = await updatePatientReport(reportId, data);
-      if (patient) {
-        const updatedReports = await getPatientReports(patient._id);
-        setLocalClinicalReports(updatedReports);
-      }
-      toast.success(message);
-    } catch (error) {
-      if (error instanceof Error) toast.error(error.message);
-    } finally {
-      setIsEditModalOpen(false);
-      setSelectedReport(null);
-    }
+    await updateReport({ reportId, data });
+    setIsEditModalOpen(false);
+    setSelectedReport(null);
   };
 
   const handleConfirmDeleteReport = async (reportId: string) => {
-    try {
-      const message = await deletePatientReport(reportId);
-
-      if (patient) {
-        const updatedReports = await getPatientReports(patient._id);
-        setLocalClinicalReports(updatedReports);
-
-        // Calcular el nuevo número total de páginas
-        const newTotalPages = Math.ceil(updatedReports.length / REPORTS_PER_PAGE) || 1;
-
-        // Ajustar la página actual si es necesario
-        if (currentReportPage > newTotalPages) {
-          setCurrentReportPage(newTotalPages);
-        }
-      }
-      toast.success(message);
-    } catch (error) {
-      if (error instanceof Error) toast.error(error.message);
-    } finally {
-      setIsDeleteModalOpen(false);
-      setSelectedReport(null);
-    }
+    await deleteReport(reportId);
+    setIsDeleteModalOpen(false);
+    setSelectedReport(null);
   };
 
   const handleSaveNewReport = async (newReport: CreateClinicalReportForm) => {
-    try {
-      const message = await createPatientReport(newReport);
-      if (patient) {
-        const updatedReports = await getPatientReports(patient._id);
-        setLocalClinicalReports(updatedReports);
-      }
-      toast.success(message);
-    } catch (error) {
-      if (error instanceof Error) toast.error(error.message);
-    } finally {
-      // Después de guardar, recargar los reportes para refrescar la vista
-
-      setIsAddModalOpen(false);
-    }
+    await createReport(newReport);
+    setIsAddModalOpen(false);
   };
 
   const canEditReport = (report: PatientClinicalReport) => {
-    return report.userId._id === currentUser._id;
+    return report.userId?._id === currentUser._id;
   };
 
   const getSpeciesIcon = (species: string) => {
@@ -469,7 +417,7 @@ export function PatientDetailsModal({
                     </div>
                     <div className="flex items-center space-x-2">
                       <Button
-                        onClick={handleAddReport}
+                        onClick={() => setIsAddModalOpen(true)}
                         className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
                       >
                         <Plus className="h-4 w-4 mr-2" />
@@ -486,7 +434,18 @@ export function PatientDetailsModal({
                   </div>
                 </CardHeader>
                 <CardContent>
-                  {clinicalReports.length > 0 ? (
+                  {isLoadingReports ? (
+                    <div className="flex items-center justify-center py-8 text-gray-500">
+                      <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent mr-3" />
+                      Cargando historias clínicas...
+                    </div>
+                  ) : isReportsError ? (
+                    <p className="text-center py-8 text-red-600">
+                      {reportsError instanceof Error
+                        ? reportsError.message
+                        : "No se pudieron cargar las historias clínicas"}
+                    </p>
+                  ) : currentReports.length > 0 ? (
                     <div className="space-y-4">
                       {currentReports.map((report) => (
                         <div
@@ -497,11 +456,11 @@ export function PatientDetailsModal({
                             <div className="flex items-center space-x-2">
                               <FileText className="h-4 w-4 text-blue-500" />
                               <span className="font-medium text-gray-900">
-                                {report.userId.firstName}{" "}
-                                {report.userId.lastName}
+                                {report.userId?.firstName}{" "}
+                                {report.userId?.lastName}
                               </span>
                               <Badge variant="outline" className="text-xs">
-                                {report.userId.role}
+                                {report.userId?.role}
                               </Badge>
                             </div>
                             <div className="flex items-center space-x-2">
@@ -531,7 +490,7 @@ export function PatientDetailsModal({
                               )}
                             </div>
                           </div>
-                          <p className="text-gray-700 text-sm leading-relaxed">
+                          <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap break-words">
                             {report.details}
                           </p>
                         </div>
@@ -596,7 +555,7 @@ export function PatientDetailsModal({
                         No hay reportes clínicos registrados
                       </p>
                       <Button
-                        onClick={handleAddReport}
+                        onClick={() => setIsAddModalOpen(true)}
                         variant="outline"
                         className="border-green-200 text-green-700 hover:bg-green-50 bg-transparent"
                       >

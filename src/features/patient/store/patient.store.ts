@@ -6,12 +6,13 @@ import {
   deletePatient,
   desactivatePatient,
   updatePatient,
+  type CreatePatientResponse,
 } from "../services/patient.service";
 
 interface PatientStore {
   patients: Patient[];
   setPatients: (patients: Patient[]) => void;
-  createPatient: (patient: CreatePatientForm) => Promise<string>;
+  createPatient: (patient: CreatePatientForm) => Promise<CreatePatientResponse>;
   updatePatient: (patientId: string, patient: CreatePatientForm) => Promise<string>;
   desactivatePatient: (patientId: string) => Promise<string>;
   activatePatient: (patientId: string) => Promise<string>;
