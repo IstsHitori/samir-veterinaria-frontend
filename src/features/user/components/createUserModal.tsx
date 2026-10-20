@@ -33,7 +33,7 @@ import { useState } from "react";
 interface CreateUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: CreateUserForm) => void;
+  onSubmit: (data: CreateUserForm) => Promise<boolean | void> | boolean | void;
 }
 
 export function CreateUserModal({
@@ -42,6 +42,7 @@ export function CreateUserModal({
   onSubmit,
 }: CreateUserModalProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<CreateUserForm>({
     resolver: zodResolver(createUserSchema),
@@ -54,12 +55,22 @@ export function CreateUserModal({
     },
   });
 
-  const handleSubmit = (data: CreateUserForm) => {
-    onSubmit(data);
-    form.reset();
+  const handleSubmit = async (data: CreateUserForm) => {
+    setIsSubmitting(true);
+    try {
+      const result = await onSubmit(data);
+      // Si la creación falló el modal queda abierto para corregir los datos
+      if (result !== false) {
+        form.reset();
+        onClose();
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = () => {
+    if (isSubmitting) return;
     onClose();
     form.reset();
   };
@@ -225,10 +236,11 @@ export function CreateUserModal({
             </Button>
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
             >
               <UserPlus className="mr-2 h-4 w-4" />
-              Crear Usuario
+              {isSubmitting ? "Creando..." : "Crear Usuario"}
             </Button>
           </div>
         </form>

@@ -144,14 +144,15 @@ export default function UserManagementPage() {
     }
   };
 
-  const onCreateUser = async (data: CreateUserForm) => {
+  const onCreateUser = async (data: CreateUserForm): Promise<boolean> => {
     try {
       const response = await createUser(data);
       toast.success(response);
+      return true;
     } catch (error) {
       if (error instanceof Error) toast.error(error.message);
+      return false;
     } finally {
-      setIsCreateUserModalOpen(false);
       await fetchUsers();
     }
   };
