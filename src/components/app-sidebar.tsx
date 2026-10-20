@@ -34,6 +34,16 @@ const data = {
       url: "/app/medical-reports",
       icon: PersonStanding,
     },
+    {
+      name: "Pacientes",
+      url: "/app/patients",
+      icon: PersonStanding,
+    },
+    {
+      name: "Dueños",
+      url: "/app/owners",
+      icon: Frame,
+    },
   ],
   auxiliar: [
     {
