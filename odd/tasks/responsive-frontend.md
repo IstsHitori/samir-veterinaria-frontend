@@ -25,7 +25,7 @@ Checks: `npm run build`; focused ESLint on changed TS/TSX files; report the full
 - T1 — S1 — Inline — Complete — Responsive private app shell, sidebar integration, and main-content sizing; commit `ec4bc39`.
 - T2 — S1 — Inline — Complete — Responsive user, patient, and owner index screens, filters, tables, and pagination; commit `a8d5fc1`.
 - T3 — S1 — Inline — Complete — Responsive dialogs and form layouts, including user detail and patient create/edit flows; commit `25f1cb3`.
-- T4 — S1 — Inline — Complete — Responsive dashboard, profile, authentication, and medical-report screens; final cross-module readback and checks; commit pending.
+- T4 — S1 — Inline — Needs your decision — Responsive dashboard, profile, authentication, and medical-report screens; commit `cfef190`; browser viewport proof is unavailable in this environment.
 
 ## Log
 
@@ -78,3 +78,10 @@ haz que el frontend en cada modulo sea 100% responsive de acuerdo a cada tamaño
 - `npm run build` — passed. Targeted ESLint across the 8 touched page/layout files — passed. `git diff --check` — passed.
 - No frontend test runner or browser viewport harness is configured; actual device/browser testing remains unavailable in this environment.
 - Full `npm run lint` — failed with 4 errors in unchanged baseline files (`src/components/ui/badge.tsx`, `src/components/ui/button.tsx`, `src/components/ui/form.tsx`, `src/features/user/hooks/useDashboardStats.ts`) and 5 hook/unused-directive warnings. Targeted ESLint on all files touched in T1-T4 passed or reported only the four already noted hook warnings in T2 files; no changed-file ESLint errors were reported.
+
+### L8 — Native review and remaining proof
+
+- Native review of target `sha256:145c22304f27a0286337b6c73f9c138946ff5db4d6e12a6bdfa4349664ce6f93` was approved and acknowledged (`review-c36594e97357eb0d`). No correction was requested.
+- Informational review findings: the shared `420px` breakpoint is repeated in three grids; responsive no-overflow behavior was not proven by a browser viewport test. The former is a non-blocking consistency suggestion; the latter is the open acceptance-proof gap.
+- **Needs your decision:** visually verify the branch at narrow phone, tablet, and desktop widths (for example 320px, 768px, and 1280px), especially forms, dialogs, and horizontal table scrolling. Report any clipping or page-level horizontal overflow for a bounded follow-up.
+- Engram mirror remains pending because the active memory session is bound to the backend project; no frontend document was stored under the wrong project.
