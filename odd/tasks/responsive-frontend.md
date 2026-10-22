@@ -22,8 +22,8 @@ Checks: `npm run build`; `npm run lint`; responsive source readback. The fronten
 
 ## Tasks
 
-- T1 — S1 — Inline — Complete — Responsive private app shell, sidebar integration, and main-content sizing; commit pending.
-- T2 — S1 — Inline — Open — Responsive user, patient, and owner index screens, filters, tables, and pagination; commit pending.
+- T1 — S1 — Inline — Complete — Responsive private app shell, sidebar integration, and main-content sizing; commit `ec4bc39`.
+- T2 — S1 — Inline — Complete — Responsive user, patient, and owner index screens, filters, tables, and pagination; commit pending.
 - T3 — S1 — Inline — Open — Responsive dialogs and form layouts, including user detail and patient create/edit flows; commit pending.
 - T4 — S1 — Inline — Open — Responsive dashboard, profile, authentication, and medical-report screens; final cross-module readback and checks; commit pending.
 
@@ -53,3 +53,11 @@ haz que el frontend en cada modulo sea 100% responsive de acuerdo a cada tamaño
 - Updated `src/layouts/PrivateLayout.tsx`: the private content column now uses `min-w-0 flex-1`, preventing the sidebar and content from combining into an overflowing fixed-width row; added a compact responsive sticky toolbar for the sidebar trigger.
 - `npm run build` — passed. `npx eslint src/layouts/PrivateLayout.tsx` — passed. `git diff --check` — passed.
 - No applicable automated UI test or browser viewport harness exists; source readback and build/lint are the proportional checks for this shared-shell task.
+- Native assessment for `ec4bc39` against `main`: medium, `review_due=false` (`under_budget`); RDD remains enabled and the slice is pending its line budget.
+
+### L5 — T2 verification
+
+- Reduced outer page padding and heading sizes on narrow screens; made user/patient/owner actions and filters reflow; changed the patient statistics grid to grow gradually instead of jumping to six narrow columns at `lg`.
+- Kept all table columns/data and their horizontal scrolling. Made user and patient scroll regions focusable/labeled, and allowed all three list paginations to wrap on small screens.
+- `npm run build` — passed. Targeted ESLint over the 12 touched feature files — 0 errors, 4 hook-dependency warnings in the existing user, patient, and owner pages. `git diff --check` — passed.
+- No frontend test or browser viewport harness is available; no runtime screenshot/viewport verification was performed.

@@ -14,7 +14,7 @@ interface PatientStatsCardsProps {
 
 export function PatientStatsCards({ stats }: PatientStatsCardsProps) {
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-6">
+    <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
       <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-blue-500 to-blue-600">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-transparent"></div>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">

@@ -34,14 +34,14 @@ export function OwnersTable({
     }
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border">
-            <div className="p-6 border-b">
-                <div className="flex items-center justify-between">
+        <div className="w-full min-w-0 rounded-xl border bg-white shadow-sm">
+            <div className="border-b p-3 sm:p-4 md:p-6">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-2">
                         <PawPrint className="h-5 w-5 text-blue-600" />
                         <h3 className="text-lg font-semibold text-gray-900">Lista de Propietarios</h3>
                     </div>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-gray-500 sm:text-right">
                         Mostrando {startIndex + 1}-{Math.min(startIndex + itemsPerPage, startIndex + owners.length)} de{" "}
                         {startIndex + owners.length} propietarios
                     </p>
@@ -123,11 +123,11 @@ export function OwnersTable({
             </div>
 
             {onPageChange && totalPages > 1 && (
-                <div className="flex items-center justify-between px-6 py-4 border-t">
+                <div className="flex flex-col gap-3 border-t px-3 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-4 md:px-6">
                     <p className="text-sm text-gray-500">
                         Página {currentPage} de {totalPages}
                     </p>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center justify-center gap-2">
                         <Button
                             variant="outline"
                             size="sm"
@@ -140,7 +140,7 @@ export function OwnersTable({
                         </Button>
 
                         {/* Page numbers */}
-                        <div className="flex items-center gap-1">
+                        <div className="flex flex-wrap items-center justify-center gap-1">
                             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                                 <Button
                                     key={page}

@@ -168,12 +168,12 @@ export default function OwnersDashboard() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 p-6">
-        <div className="mx-auto max-w-7xl space-y-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 p-3 sm:p-5 lg:p-6">
+        <div className="mx-auto max-w-7xl space-y-5 sm:space-y-6 lg:space-y-8">
           {/* Header */}
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+              <h1 className="break-words text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent sm:text-3xl xl:text-4xl">
                 Gestión de Propietarios
               </h1>
               <p className="text-gray-600 mt-2">
@@ -182,7 +182,7 @@ export default function OwnersDashboard() {
             </div>
             <Button
               onClick={() => setIsCreateOwnerModalOpen(true)}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all duration-200"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl sm:w-auto"
             >
               <Plus className="mr-2 h-4 w-4" />
               Nuevo Propietario

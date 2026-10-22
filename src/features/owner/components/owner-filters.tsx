@@ -20,15 +20,15 @@ export function OwnerFilters({
     setSortBy,
 }: OwnerFiltersProps) {
     return (
-        <div className="bg-white rounded-xl shadow-sm border p-6">
+        <div className="bg-white rounded-xl shadow-sm border p-3 sm:p-4 md:p-6">
             <div className="flex items-center gap-2 mb-4">
                 <Search className="h-5 w-5 text-blue-500" />
                 <h3 className="text-lg font-semibold text-gray-900">Filtros y Búsqueda</h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 {/* Search */}
-                <div className="relative lg:col-span-2">
+                <div className="relative min-w-0 md:col-span-2 xl:col-span-2">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                     <Input
                         placeholder="Buscar por nombre, documento, email o teléfono..."

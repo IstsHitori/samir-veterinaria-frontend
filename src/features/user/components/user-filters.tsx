@@ -37,8 +37,8 @@ export function UserFilters({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-4 md:flex-row md:items-center">
-          <div className="relative flex-1">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="relative min-w-0 sm:col-span-2 xl:col-span-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input
               placeholder="Buscar por nombre o email..."
@@ -49,7 +49,7 @@ export function UserFilters({
           </div>
 
           <Select value={roleFilter} onValueChange={setRoleFilter}>
-            <SelectTrigger className="w-full md:w-48 border-gray-200 focus:border-blue-500 focus:ring-blue-500">
+            <SelectTrigger className="w-full min-w-0 border-gray-200 focus:border-blue-500 focus:ring-blue-500">
               <SelectValue placeholder="Filtrar por rol" />
             </SelectTrigger>
             <SelectContent>
@@ -61,7 +61,7 @@ export function UserFilters({
           </Select>
 
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full md:w-48 border-gray-200 focus:border-blue-500 focus:ring-blue-500">
+            <SelectTrigger className="w-full min-w-0 border-gray-200 focus:border-blue-500 focus:ring-blue-500">
               <SelectValue placeholder="Filtrar por estado" />
             </SelectTrigger>
             <SelectContent>

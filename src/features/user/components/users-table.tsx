@@ -85,7 +85,12 @@ export function UsersTable({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
+        <div
+          className="overflow-x-auto overscroll-x-contain"
+          role="region"
+          aria-label="Tabla de usuarios"
+          tabIndex={0}
+        >
           <Table>
             <TableHeader>
               <TableRow className="border-gray-200">
@@ -273,11 +278,11 @@ export function UsersTable({
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+          <div className="mt-6 flex flex-col gap-3 border-t border-gray-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-sm text-gray-600">
               Página {currentPage} de {totalPages}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -289,7 +294,7 @@ export function UsersTable({
                 Anterior
               </Button>
 
-              <div className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center justify-center gap-1">
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                   (page) => (
                     <Button
