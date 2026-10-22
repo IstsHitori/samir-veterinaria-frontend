@@ -4,6 +4,10 @@ import { useAuthInit } from "@/features/auth/hooks/useAuthInit";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ToastContainer } from "react-toastify";
+import {
+  canAccessRoleRoute,
+  getRoleHomeRoute,
+} from "@/features/auth/utils/app-role-routes";
 
 export function PrivateLayout() {
   const user = useAuthStore((state) => state.user);
@@ -23,9 +27,13 @@ export function PrivateLayout() {
     );
   }
 
-  // Redirigir al login si no hay usuario autenticado, guardando la ruta actual
+  // Redirigir al login sin conservar la ruta del usuario anterior.
   if (!user) {
-    return <Navigate to="/auth/login" state={{ from: location.pathname }} replace />;
+    return <Navigate to="/auth/login" replace />;
+  }
+
+  if (!canAccessRoleRoute(user.role, location.pathname)) {
+    return <Navigate to={getRoleHomeRoute(user.role)} replace />;
   }
 
   return (

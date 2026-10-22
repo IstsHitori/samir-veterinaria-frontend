@@ -22,6 +22,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { canAccessRoleRoute } from "@/features/auth/utils/app-role-routes";
 import HeaderSidedar from "./header-sidedar";
 
 type NavigationItem = {
@@ -111,7 +112,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {section.title}
             </SidebarGroupLabel>
             <SidebarMenu className="gap-1">
-              {section.items.map((item) => (
+              {section.items
+                .filter((item) => canAccessRoleRoute(user.role, item.url))
+                .map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton
                     asChild
