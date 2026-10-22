@@ -36,8 +36,8 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="bg-gradient-to-br w-full  flex items-center justify-center py-4">
-      <div className="mx-auto max-w-5xl p-4 space-y-6 w-full">
+    <div className="flex min-w-0 w-full items-center justify-center px-3 py-4 sm:px-4">
+      <div className="mx-auto w-full max-w-5xl space-y-6 sm:p-4">
         {/* Header minimalista y elegante */}
         <div className="relative">
           <Card className="border-0 bg-white/70 backdrop-blur-xl shadow-xl shadow-black/5">
@@ -65,7 +65,7 @@ export default function ProfilePage() {
                     <h1 className="text-2xl lg:text-2xl font-bold text-gray-900 mb-1">
                       {currentProfile.firstName} {currentProfile.lastName}
                     </h1>
-                    <div className="flex items-center justify-center lg:justify-start gap-3">
+                    <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                       <Badge
                         variant={getRoleColor(currentProfile.role)}
                         className="font-medium px-3 py-1 text-sm"
@@ -73,7 +73,7 @@ export default function ProfilePage() {
                         <Shield className="w-3 h-3 mr-1" />
                         {currentProfile.role}
                       </Badge>
-                      <span className="text-gray-500 text-sm">
+                      <span className="break-all text-gray-500 text-sm">
                         {currentProfile.email}
                       </span>
                     </div>
@@ -81,7 +81,7 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Botones de acción */}
-                <div className="flex gap-3">
+                <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
                   <Button
                     onClick={() => setShowEditForm(true)}
                     className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
@@ -123,7 +123,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div className="p-3 bg-purple-50/50 rounded-xl border border-purple-100">
                     <p className="text-xs font-medium text-gray-600 mb-1">
                       Nombre

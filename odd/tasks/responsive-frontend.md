@@ -18,14 +18,14 @@ Acceptance criteria:
 - Dense tables preserve all columns and remain accessible through contained horizontal scrolling on narrow screens. Assumption: preserve the existing table presentation rather than changing tables into cards or hiding data.
 - Existing routes, role-based navigation, data, and actions remain unchanged.
 
-Checks: `npm run build`; `npm run lint`; responsive source readback. The frontend package has no test script or browser viewport test configured.
+Checks: `npm run build`; focused ESLint on changed TS/TSX files; report the full `npm run lint` result; responsive source readback. The frontend package has no test script or browser viewport test configured.
 
 ## Tasks
 
 - T1 — S1 — Inline — Complete — Responsive private app shell, sidebar integration, and main-content sizing; commit `ec4bc39`.
 - T2 — S1 — Inline — Complete — Responsive user, patient, and owner index screens, filters, tables, and pagination; commit `a8d5fc1`.
-- T3 — S1 — Inline — Complete — Responsive dialogs and form layouts, including user detail and patient create/edit flows; commit pending.
-- T4 — S1 — Inline — Open — Responsive dashboard, profile, authentication, and medical-report screens; final cross-module readback and checks; commit pending.
+- T3 — S1 — Inline — Complete — Responsive dialogs and form layouts, including user detail and patient create/edit flows; commit `25f1cb3`.
+- T4 — S1 — Inline — Complete — Responsive dashboard, profile, authentication, and medical-report screens; final cross-module readback and checks; commit pending.
 
 ## Log
 
@@ -69,3 +69,12 @@ haz que el frontend en cada modulo sea 100% responsive de acuerdo a cada tamaño
 - User create/edit fields stack below `sm`; user detail no longer forces an 800px width. Patient forms use reduced mobile padding and stack action buttons. Owner and clinical-report modal actions also stack on narrow screens.
 - `npm run build` — passed. Targeted ESLint across the 11 touched dialog/form files — passed. `git diff --check` — passed.
 - No frontend test or browser viewport harness exists; no screenshot or actual-device test was performed.
+- Native assessment for `25f1cb3` against `main`: medium, `review_due=false` (`under_budget`); cumulative slice is 251 changed lines.
+
+### L7 — T4 verification
+
+- Dashboard/profile spacing and text layouts now reduce and wrap on narrow screens. Public auth routes have a viewport-height shell and gutters; login form width is capped and fluid.
+- Medical-report page header/actions and pagination now stack/wrap; patient details and medical cards use narrow-screen grids and wrapping content.
+- `npm run build` — passed. Targeted ESLint across the 8 touched page/layout files — passed. `git diff --check` — passed.
+- No frontend test runner or browser viewport harness is configured; actual device/browser testing remains unavailable in this environment.
+- Full `npm run lint` — failed with 4 errors in unchanged baseline files (`src/components/ui/badge.tsx`, `src/components/ui/button.tsx`, `src/components/ui/form.tsx`, `src/features/user/hooks/useDashboardStats.ts`) and 5 hook/unused-directive warnings. Targeted ESLint on all files touched in T1-T4 passed or reported only the four already noted hook warnings in T2 files; no changed-file ESLint errors were reported.

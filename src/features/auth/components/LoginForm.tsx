@@ -28,10 +28,10 @@ export default function LoginForm() {
     }
   };
   return (
-    <div className="p-10 flex items-center h-full justify-center">
-      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex h-full w-full items-center justify-center p-4 sm:p-8 lg:p-10">
+      <form className="w-full max-w-md space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-2 items-center justify-center">
-          <h3 className="text-4xl font-semibold text-[#0A0903]">
+          <h3 className="text-3xl font-semibold text-[#0A0903] sm:text-4xl">
             Hola de nuevo!
           </h3>
           <p className="text-gray-600 text-sm">Bienvenido a VETERINARIA PET</p>

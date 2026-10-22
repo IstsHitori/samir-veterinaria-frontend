@@ -31,9 +31,9 @@ export function PublicLayout() {
 
   // Capturar la ubicación actual para redirigir después del login
   return (
-    <>
+    <main className="min-h-dvh w-full px-4 sm:px-0">
       <ToastContainer />
       <Outlet />
-    </>
+    </main>
   );
 }

@@ -108,7 +108,7 @@ export function PatientMedicalCard({
           </Button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div className="mb-4 grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 md:grid-cols-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600">
             <Calendar className="h-4 w-4 text-blue-500" />
             <span>{calculateAge(patient.birthDate)}</span>

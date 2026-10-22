@@ -99,17 +99,17 @@ export default function MedicalReportsDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-white to-emerald-50">
-      <div className="container mx-auto px-6 py-8 max-w-7xl space-y-8">
-        <div className="relative overflow-hidden bg-gradient-to-r from-primary to-primary/90 rounded-2xl p-8 text-white shadow-xl">
+      <div className="container mx-auto w-full max-w-7xl space-y-5 px-3 py-4 sm:space-y-8 sm:px-6 sm:py-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-primary/90 p-4 text-white shadow-xl sm:p-8">
           <div className="absolute inset-0 bg-[url('/placeholder-di6ki.png')] opacity-10"></div>
-          <div className="relative flex items-center justify-between">
+          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
                   <Stethoscope className="h-8 w-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold">Reportes Médicos</h1>
+                  <h1 className="text-2xl font-bold sm:text-3xl">Reportes Médicos</h1>
                   <p className="text-cyan-100 text-md mt-2">
                     Sistema integral de historias clínicas veterinarias
                   </p>
@@ -118,7 +118,7 @@ export default function MedicalReportsDashboard() {
             </div>
             <Button
               onClick={() => setIsAddReportModalOpen(true)}
-              className="bg-white hover:bg-secondary/90 text-black shadow-lg hover:shadow-xl transition-all duration-200 px-6 py-3"
+              className="w-full bg-white px-4 py-3 text-black shadow-lg transition-all duration-200 hover:bg-secondary/90 hover:shadow-xl sm:w-auto sm:px-6"
               size="lg"
             >
               <Plus className="h-5 w-5 mr-2" />
@@ -130,7 +130,7 @@ export default function MedicalReportsDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-200">
             <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-blue-100 text-sm font-medium uppercase tracking-wide">
                     Total Pacientes
@@ -266,11 +266,11 @@ export default function MedicalReportsDashboard() {
             )}
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-between mt-8 pt-6 border-t border-border">
+              <div className="mt-8 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-muted-foreground font-medium">
                   Página {currentPage} de {totalPages}
                 </p>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center justify-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"

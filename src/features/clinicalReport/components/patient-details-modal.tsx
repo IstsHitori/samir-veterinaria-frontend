@@ -215,7 +215,7 @@ export function PatientDetailsModal({
       <Dialog open={isOpen} onOpenChange={handleModalClose}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+            <DialogTitle className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent sm:text-2xl">
               Detalles del Paciente
             </DialogTitle>
           </DialogHeader>
@@ -225,17 +225,17 @@ export function PatientDetailsModal({
               {/* Información Principal del Paciente */}
               <Card className="border-l-4 border-l-blue-500">
                 <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-4">
+                  <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
                     <Avatar className="h-20 w-20 bg-gradient-to-br from-blue-500 to-blue-600">
                       <AvatarFallback className="text-white text-2xl">
                         {getSpeciesIcon(patient.type)}
                       </AvatarFallback>
                     </Avatar>
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900">
+                    <div className="min-w-0">
+                      <h3 className="break-words text-xl font-bold text-gray-900 sm:text-2xl">
                         {patient.name}
                       </h3>
-                      <div className="flex items-center space-x-2 mt-2">
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
                         <Badge
                           className={`${getSpeciesColor(
                             patient.type
@@ -254,7 +254,7 @@ export function PatientDetailsModal({
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 lg:grid-cols-4">
                     <div className="flex items-center space-x-2">
                       <Calendar className="h-5 w-5 text-blue-500" />
                       <div>
@@ -405,8 +405,8 @@ export function PatientDetailsModal({
               {/* Historial Clínico */}
               <Card>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-wrap items-center gap-2">
                       <Stethoscope className="h-5 w-5 text-green-500" />
                       <span className="text-lg font-semibold">
                         Historial Clínico
@@ -415,10 +415,10 @@ export function PatientDetailsModal({
                         {clinicalReports.length} reportes
                       </Badge>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                       <Button
                         onClick={() => setIsAddModalOpen(true)}
-                        className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                        className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg transition-all duration-200 hover:from-green-700 hover:to-green-800 hover:shadow-xl sm:w-auto"
                       >
                         <Plus className="h-4 w-4 mr-2" />
                         Nueva Historia Clínica
@@ -452,8 +452,8 @@ export function PatientDetailsModal({
                           key={report._id}
                           className="border rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
                         >
-                          <div className="flex items-center justify-between mb-3">
-                            <div className="flex items-center space-x-2">
+                          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="flex flex-wrap items-center gap-2">
                               <FileText className="h-4 w-4 text-blue-500" />
                               <span className="font-medium text-gray-900">
                                 {report.userId?.firstName}{" "}
@@ -463,8 +463,8 @@ export function PatientDetailsModal({
                                 {report.userId?.role}
                               </Badge>
                             </div>
-                            <div className="flex items-center space-x-2">
-                              <div className="flex items-center space-x-2 text-sm text-gray-500">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <div className="flex items-center gap-2 text-sm text-gray-500">
                                 <Clock className="h-4 w-4" />
                                 <span>{formatDate(report.createdAt)}</span>
                               </div>
@@ -497,11 +497,11 @@ export function PatientDetailsModal({
                       ))}
 
                       {totalReportPages > 1 && (
-                        <div className="flex items-center justify-between pt-4 border-t">
+                        <div className="flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
                           <div className="text-sm text-gray-500">
                             Página {currentReportPage} de {totalReportPages}
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex flex-wrap items-center justify-center gap-2">
                             <Button
                               variant="outline"
                               size="sm"

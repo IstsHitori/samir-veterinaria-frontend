@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const LoginPage = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-4 min-h-screen">
+    <div className="grid min-h-dvh grid-cols-1 gap-4 p-2 sm:gap-5 sm:p-4 md:grid-cols-2">
       {/* Lado izquierdo */}
       <div className="bg-[url('/lado-izq.png')] rounded-4xl bg-cover bg-center h-full hidden md:block">
         <nav className="flex justify-between text-sm p-10 px-12 font-semibold text-[#0A0903]">
