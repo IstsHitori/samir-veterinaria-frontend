@@ -30,7 +30,7 @@ export function UserDetailsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="!max-w-4xl !w-[800px] max-h-[95vh] overflow-y-auto bg-gradient-to-br from-slate-50 to-blue-50/30 p-0">
+      <DialogContent className="max-w-4xl max-h-[calc(100dvh-2rem)] overflow-y-auto bg-gradient-to-br from-slate-50 to-blue-50/30 p-0">
         {/* Header con diseño mejorado */}
         <DialogHeader className="relative p-6 pb-4">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-green-600/10 rounded-t-lg"></div>

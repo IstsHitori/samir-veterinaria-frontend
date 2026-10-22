@@ -93,7 +93,7 @@ export function EditUserModal({
         </DialogHeader>
 
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label
                 htmlFor="firstName"
@@ -247,18 +247,18 @@ export function EditUserModal({
             </p>
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex flex-col-reverse gap-3 pt-4 sm:flex-row">
             <Button
               type="button"
               variant="outline"
               onClick={handleClose}
-              className="flex-1 bg-transparent"
+              className="w-full bg-transparent sm:flex-1"
             >
               Cancelar
             </Button>
             <Button
               type="submit"
-              className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700"
+              className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 sm:flex-1"
             >
               <Users className="mr-2 h-4 w-4" />
               Guardar Cambios

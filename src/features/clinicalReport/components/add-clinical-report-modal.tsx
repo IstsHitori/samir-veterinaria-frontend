@@ -110,13 +110,13 @@ export function AddClinicalReportModal({
               )}
             />
 
-            <div className="flex justify-end gap-3 pt-4 border-t">
+            <div className="flex flex-col-reverse gap-2 border-t pt-4 sm:flex-row sm:justify-end">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
                 disabled={isLoading}
-                className="flex items-center gap-2 bg-transparent"
+                className="w-full bg-transparent sm:w-auto"
               >
                 <X className="h-4 w-4" />
                 Cancelar
@@ -124,7 +124,7 @@ export function AddClinicalReportModal({
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 sm:w-auto"
               >
                 <Save className="h-4 w-4" />
                 {isLoading ? "Guardando..." : "Crear Historia Clínica"}

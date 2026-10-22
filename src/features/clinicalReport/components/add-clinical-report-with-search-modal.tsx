@@ -271,14 +271,14 @@ export function AddClinicalReportWithSearchModal({
                   )}
                 />
 
-                <div className="flex justify-end space-x-2 pt-4">
-                  <Button type="button" variant="outline" onClick={handleClose}>
+                <div className="flex flex-col-reverse gap-2 pt-4 sm:flex-row sm:justify-end">
+                  <Button type="button" variant="outline" onClick={handleClose} className="w-full sm:w-auto">
                     Cancelar
                   </Button>
                   <Button
                     type="submit"
                     disabled={isPending}
-                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
+                    className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 sm:w-auto"
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     {isPending ? "Guardando..." : "Crear Historia Clínica"}

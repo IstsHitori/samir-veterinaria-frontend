@@ -23,8 +23,8 @@ Checks: `npm run build`; `npm run lint`; responsive source readback. The fronten
 ## Tasks
 
 - T1 — S1 — Inline — Complete — Responsive private app shell, sidebar integration, and main-content sizing; commit `ec4bc39`.
-- T2 — S1 — Inline — Complete — Responsive user, patient, and owner index screens, filters, tables, and pagination; commit pending.
-- T3 — S1 — Inline — Open — Responsive dialogs and form layouts, including user detail and patient create/edit flows; commit pending.
+- T2 — S1 — Inline — Complete — Responsive user, patient, and owner index screens, filters, tables, and pagination; commit `a8d5fc1`.
+- T3 — S1 — Inline — Complete — Responsive dialogs and form layouts, including user detail and patient create/edit flows; commit pending.
 - T4 — S1 — Inline — Open — Responsive dashboard, profile, authentication, and medical-report screens; final cross-module readback and checks; commit pending.
 
 ## Log
@@ -61,3 +61,11 @@ haz que el frontend en cada modulo sea 100% responsive de acuerdo a cada tamaño
 - Kept all table columns/data and their horizontal scrolling. Made user and patient scroll regions focusable/labeled, and allowed all three list paginations to wrap on small screens.
 - `npm run build` — passed. Targeted ESLint over the 12 touched feature files — 0 errors, 4 hook-dependency warnings in the existing user, patient, and owner pages. `git diff --check` — passed.
 - No frontend test or browser viewport harness is available; no runtime screenshot/viewport verification was performed.
+- Native assessment for `a8d5fc1` against `main`: medium, `review_due=false` (`under_budget`); cumulative slice is 165 changed lines.
+
+### L6 — T3 verification
+
+- Shared dialog content now uses viewport-relative width and height limits with internal vertical scrolling, so custom maximum widths cannot force dialogs beyond a phone viewport.
+- User create/edit fields stack below `sm`; user detail no longer forces an 800px width. Patient forms use reduced mobile padding and stack action buttons. Owner and clinical-report modal actions also stack on narrow screens.
+- `npm run build` — passed. Targeted ESLint across the 11 touched dialog/form files — passed. `git diff --check` — passed.
+- No frontend test or browser viewport harness exists; no screenshot or actual-device test was performed.

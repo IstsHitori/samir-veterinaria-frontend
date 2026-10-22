@@ -196,7 +196,7 @@ export function EditPatientModal({
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
         <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] overflow-y-auto p-0">
-          <DialogHeader className="relative p-6 pb-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-t-lg">
+          <DialogHeader className="relative p-4 pb-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-t-lg sm:p-6 sm:pb-4">
             <DialogTitle className="flex items-center gap-3 text-2xl">
               <div className="p-2 bg-white/20 rounded-lg">
                 <SelectedSpeciesIcon className="h-6 w-6" />
@@ -207,7 +207,7 @@ export function EditPatientModal({
 
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="p-6 space-y-8"
+            className="space-y-6 p-3 sm:space-y-8 sm:p-6"
           >
             {/* Información del Paciente */}
             <Card className="border-0 shadow-lg">
@@ -217,7 +217,7 @@ export function EditPatientModal({
                   Información del Paciente
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-4">
+              <CardContent className="space-y-4 p-4 sm:p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label
@@ -414,7 +414,7 @@ export function EditPatientModal({
                   Propietario del Paciente
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6">
+              <CardContent className="p-4 sm:p-6">
                 <OwnerSearchSelector
                   owners={owners}
                   selectedOwnerId={watchedOwnerId}
@@ -433,7 +433,7 @@ export function EditPatientModal({
                   Información Médica
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-6">
+              <CardContent className="space-y-6 p-4 sm:p-6">
                 {/* Condiciones Médicas */}
                 <div className="space-y-3">
                   <Label className="text-sm font-medium">
@@ -601,18 +601,18 @@ export function EditPatientModal({
             </Card>
 
             {/* Botones */}
-            <div className="flex gap-3 pt-4">
+            <div className="flex flex-col-reverse gap-3 pt-4 sm:flex-row">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
-                className="flex-1 bg-transparent"
+                className="w-full bg-transparent sm:flex-1"
               >
                 Cancelar
               </Button>
               <Button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700"
+                className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 sm:flex-1"
               >
                 <Heart className="mr-2 h-4 w-4" />
                 Guardar Cambios

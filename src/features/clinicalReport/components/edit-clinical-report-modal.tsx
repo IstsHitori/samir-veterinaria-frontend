@@ -119,13 +119,13 @@ export function EditClinicalReportModal({
               )}
             />
 
-            <div className="flex justify-end gap-3 pt-4 border-t">
+            <div className="flex flex-col-reverse gap-2 border-t pt-4 sm:flex-row sm:justify-end">
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleClose}
                 disabled={isLoading}
-                className="flex items-center gap-2 bg-transparent"
+                className="w-full bg-transparent sm:w-auto"
               >
                 <X className="h-4 w-4" />
                 Cancelar
@@ -133,7 +133,7 @@ export function EditClinicalReportModal({
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 sm:w-auto"
               >
                 <Save className="h-4 w-4" />
                 {isLoading ? "Guardando..." : "Guardar Cambios"}

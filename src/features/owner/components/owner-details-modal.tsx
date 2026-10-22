@@ -117,7 +117,7 @@ export function OwnerDetailsModal({ owner, isOpen, onClose }: OwnerDetailsModalP
                             {owner.patients.length === 0 ? (
                                 <p className="text-muted-foreground text-center py-4">Este propietario no tiene mascotas registradas</p>
                             ) : (
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-1 gap-4 min-[420px]:grid-cols-2 md:grid-cols-4">
                                     <div className="text-center">
                                         <div className="text-2xl font-bold text-blue-600">
                                             {owner.patients.filter((p) => p.isVaccinated).length}
