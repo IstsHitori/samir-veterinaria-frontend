@@ -32,9 +32,13 @@ export function PrivateLayout() {
     <SidebarProvider>
       <ToastContainer />
       <AppSidebar />
-      <main className="w-full">
-        <SidebarTrigger />
-        <Outlet />
+      <main className="min-w-0 flex-1">
+        <div className="sticky top-0 z-20 flex h-14 items-center border-b border-slate-200/70 bg-background/90 px-3 backdrop-blur sm:px-5">
+          <SidebarTrigger className="size-9 rounded-lg border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50" />
+        </div>
+        <div className="min-w-0">
+          <Outlet />
+        </div>
       </main>
     </SidebarProvider>
   );
