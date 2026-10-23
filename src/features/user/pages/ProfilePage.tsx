@@ -54,9 +54,6 @@ export default function ProfilePage() {
                       )}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="absolute -bottom-1 -right-1 bg-emerald-500 rounded-full p-1 border-3 border-white shadow-lg">
-                    <CheckCircle className="w-3 h-3 text-white" />
-                  </div>
                 </div>
 
                 {/* Información principal */}
