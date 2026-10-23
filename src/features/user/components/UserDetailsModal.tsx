@@ -8,7 +8,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle } from "lucide-react";
 import { getInitials, formatDate } from "@/shared/utils";
 import { roleIcons, roleColors, roleLabels } from "../constants/user-constants";
 import type { User } from "../schemas/user.schema";
@@ -78,11 +77,6 @@ export function UserDetailsModal({
               <div className="flex items-center gap-2 text-gray-600 break-all">
                 <Mail className="h-4 w-4 flex-shrink-0" />
                 <span className="text-xs sm:text-sm">{user.email}</span>
-                {user.emailValidated ? (
-                  <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                ) : (
-                  <XCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
-                )}
               </div>
             </div>
           </div>
@@ -90,7 +84,7 @@ export function UserDetailsModal({
 
         <div className="px-6 pb-6 space-y-6">
           {/* Stats Cards Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:max-w-md">
             <Card className="relative overflow-hidden border-0 shadow-lg bg-gradient-to-br from-blue-500 to-blue-600">
               <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -mr-8 -mt-8"></div>
               <CardContent className="p-4 relative z-10">
@@ -110,28 +104,6 @@ export function UserDetailsModal({
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-0 shadow-lg bg-gradient-to-br from-purple-500 to-purple-600">
-              <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -mr-8 -mt-8"></div>
-              <CardContent className="p-4 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-purple-100 text-xs font-medium">
-                      Estado Email
-                    </p>
-                    <p className="text-white text-base font-bold">
-                      {user.emailValidated ? "Verificado" : "Pendiente"}
-                    </p>
-                  </div>
-                  <div className="p-2 sm:p-3 bg-white/20 rounded-full flex-shrink-0">
-                    {user.emailValidated ? (
-                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                    ) : (
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Main Content Grid */}
@@ -156,23 +128,6 @@ export function UserDetailsModal({
                     <p className="font-semibold text-gray-900 text-sm sm:text-base break-all">
                       {user.email}
                     </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      {user.emailValidated ? (
-                        <>
-                          <CheckCircle className="h-3 w-3 text-green-500 flex-shrink-0" />
-                          <span className="text-xs text-green-600 font-medium">
-                            Verificado
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <XCircle className="h-3 w-3 text-red-400 flex-shrink-0" />
-                          <span className="text-xs text-red-500 font-medium">
-                            No verificado
-                          </span>
-                        </>
-                      )}
-                    </div>
                   </div>
                 </div>
               </CardContent>

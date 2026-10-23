@@ -34,12 +34,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
 import { roleColors, roleLabels, roleIcons } from "../constants/user-constants";
 import { getInitials, formatDate } from "@/shared/utils";
 import type { User } from "../schemas/user.schema";
@@ -147,30 +141,7 @@ export function UsersTable({
                     </TableCell>
 
                     <TableCell>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">
-                          {user.email}
-                        </span>
-                        <TooltipProvider>
-                          {user.emailValidated ? (
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <CheckCircle className="h-4 w-4 text-green-600" />
-                              </TooltipTrigger>
-                              <TooltipContent>Email verificado</TooltipContent>
-                            </Tooltip>
-                          ) : (
-                            <Tooltip>
-                              <TooltipTrigger>
-                                <XCircle className="h-4 w-4 text-red-400" />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                Email no verificado
-                              </TooltipContent>
-                            </Tooltip>
-                          )}
-                        </TooltipProvider>
-                      </div>
+                      <span className="text-sm font-medium">{user.email}</span>
                     </TableCell>
 
                     <TableCell>

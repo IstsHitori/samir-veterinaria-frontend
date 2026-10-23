@@ -237,18 +237,9 @@ export default function ProfilePage() {
 
         {/* Footer elegante */}
         <div className="text-center py-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/60 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm">
-            <div className="flex items-center gap-1.5">
-              <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-              <span className="text-xs font-medium text-gray-700">
-                Perfil verificado
-              </span>
-            </div>
-            <div className="w-px h-3 bg-gray-300"></div>
-            <span className="text-xs text-gray-500">
-              Actualizado {formatDate(currentProfile.updatedAt)}
-            </span>
-          </div>
+          <span className="text-xs text-gray-500">
+            Actualizado {formatDate(currentProfile.updatedAt)}
+          </span>
         </div>
 
         {/* Diálogos */}

@@ -6,7 +6,6 @@ export const ProfileSchema = z.object({
   lastName: z.string(),
   email: z.string().email(),
   role: z.string(),
-  emailValidated: z.boolean(),
   isActive: z.boolean(),
   createdAt: z.string(),
   updatedAt: z.string(),

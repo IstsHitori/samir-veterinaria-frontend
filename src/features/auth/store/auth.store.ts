@@ -14,7 +14,6 @@ interface AuthStore {
     newPassword: string,
     confirmNewPassword: string
   ) => Promise<string>;
-  confirmAccount: (token: string) => Promise<string>;
   logout: () => void;
   loadUser: () => Promise<void>;
 }
@@ -49,15 +48,6 @@ export const useAuthStore = create<AuthStore>((set) => ({
         newPassword,
         confirmNewPassword
       );
-      return message;
-    } catch (error) {
-      if (error instanceof Error) throw error;
-      throw error;
-    }
-  },
-  confirmAccount: async (token) => {
-    try {
-      const message = await authService.confirmAccount(token);
       return message;
     } catch (error) {
       if (error instanceof Error) throw error;

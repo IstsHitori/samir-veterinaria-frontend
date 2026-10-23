@@ -4,7 +4,6 @@ import { PublicLayout } from "@/layouts/PublicLayout";
 // Auth Pages
 import { LoginPage } from "@/features/auth/pages/LoginPage";
 import { ForgotPasswordPage } from "@/features/auth/pages/ForgotPasswordPage";
-import { ConfirmAccountPage } from "@/features/auth/pages/ConfirmAccountPage";
 import ResetPassword from "@/features/auth/pages/ResetPassword";
 
 // User Pages
@@ -33,10 +32,6 @@ export const router = createBrowserRouter([
       {
         path: "forgot-password",
         element: <ForgotPasswordPage />,
-      },
-      {
-        path: "confirm",
-        element: <ConfirmAccountPage />,
       },
       {
         path: "reset-password",

@@ -6,7 +6,6 @@ export const UserSchema = z.object({
   lastName: z.string(),
   email: z.string().email(),
   role: z.enum(["admin", "auxiliar", "veterinario"]),
-  emailValidated: z.boolean(),
   deletedAt: z.string().nullable(),
   isDeleted: z.boolean(),
   isActive: z.boolean(),
@@ -15,7 +14,6 @@ export const UserSchema = z.object({
   updatedAt: z.string(),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createUserSchema = z.object({
   firstName: z
     .string()
